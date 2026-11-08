@@ -16,9 +16,6 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
-
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -91,20 +88,6 @@
         .text-navy-blue { color: #1e3a8a; }
         .border-navy-blue { border-color: #1e3a8a; }
         .bg-neon-pink { background-color: #ff00ff; }
-
-        .heroSwiper .swiper-pagination-bullet {
-            background: #fff !important;
-            opacity: 0.7 !important;
-            border: 1.5px solid #000 !important;
-            width: 10px !important;
-            height: 10px !important;
-        }
-        .heroSwiper .swiper-pagination-bullet-active {
-            background: #1e3a8a !important;
-            opacity: 1 !important;
-            border: 2px solid #fff !important;
-            transform: scale(1.25);
-        }
     </style>
 </head>
 <body class="text-gray-900 antialiased selection:bg-navy-blue selection:text-white">
@@ -115,8 +98,8 @@
     @if($search === null || $search === '')
     <!-- Hero Section -->
     <header class="sales-home-hero py-12 lg:py-20 overflow-hidden border-b-[3px] border-black bg-[#f4f4f0]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-14 relative">
-            <div class="w-full lg:w-7/12 xl:w-3/5 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="max-w-4xl relative z-10">
                 <span class="sales-kicker">Media Pembelajaran Informatika · SMAN 4 Tasikmalaya</span>
                 <h1 class="sales-title">@if(!empty($settings['sales_home_headline'])){{ $settings['sales_home_headline'] }}@else Ruang Belajar Koding, Logika &amp; <em>Inovasi Teknologi Pendidikan</em>@endif</h1>
                 <p class="sales-intro">{{ ($settings['sales_home_intro'] ?? null) ?: 'Platform belajar pemrograman Python interaktif dengan visual tracing, latihan menulis kode langsung di browser, serta dokumentasi inovasi digital pembelajaran karya Nizar Suryadi, S.T. (Guru Informatika SMAN 4 Tasikmalaya / Peserta GTK 2026 Dedikatif).' }}</p>
@@ -140,48 +123,6 @@
                             </a>
                         @endforeach
                     </div>
-                </div>
-            </div>
-            
-            <div class="w-full lg:w-5/12 xl:w-2/5 flex justify-center lg:justify-end relative z-10 mt-8 lg:mt-0">
-                <!-- Proportional Neo-Brutalist Frame for Slider -->
-                <div class="relative w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[450px] aspect-square mx-auto lg:mr-0" style="width: 100%; max-width: 450px; aspect-ratio: 1/1;">
-                    <div class="absolute inset-0 bg-navy-blue text-white brutal-border translate-x-3 translate-y-3 sm:translate-x-4 sm:translate-y-4"></div>
-                    @if(isset($sliders) && $sliders->isNotEmpty())
-                        <div class="swiper heroSwiper relative w-full h-full brutal-border bg-white" style="overflow: hidden; width: 100%; height: 100%;">
-                            <div class="swiper-wrapper">
-                                @foreach($sliders as $slider)
-                                    <div class="swiper-slide relative w-full h-full bg-black group" style="width: 100%; height: 100%;">
-                                        <x-storage-image :path="$slider->image" :loading="$loop->first ? 'eager' : 'lazy'" :fetchpriority="$loop->first ? 'high' : 'auto'" class="w-full h-full object-cover opacity-85 group-hover:opacity-100 transition duration-500" style="width: 100%; height: 100%; object-fit: cover;" alt="{{ $slider->title ?: 'Banner portfolio' }}" />
-                                        @if($slider->title || $slider->subtitle)
-                                            <div class="absolute inset-0 z-20 flex flex-col items-start justify-end p-6 sm:p-8 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
-                                                @if($slider->title)
-                                                    <h3 class="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight mb-1 drop-shadow-[2px_2px_0_rgba(0,0,0,1)]">{{ $slider->title }}</h3>
-                                                @endif
-                                                @if($slider->subtitle)
-                                                    <p class="text-xs sm:text-sm font-bold bg-navy-blue text-white px-2.5 py-1 inline-block brutal-border mb-3">{{ $slider->subtitle }}</p>
-                                                @endif
-                                                @if($slider->url)
-                                                    <a href="{{ $slider->url }}" class="bg-white text-black font-bold uppercase tracking-widest px-4 py-2 text-xs brutal-border hover:bg-navy-blue hover:text-white transition inline-block">
-                                                        READ MORE →
-                                                    </a>
-                                                @endif
-                                            </div>
-                                        @endif
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="swiper-button-next text-white drop-shadow-[2px_2px_0_rgba(0,0,0,1)] after:!text-xl !w-10 !h-10 !right-2"></div>
-                            <div class="swiper-button-prev text-white drop-shadow-[2px_2px_0_rgba(0,0,0,1)] after:!text-xl !w-10 !h-10 !left-2"></div>
-                            <div class="swiper-pagination !bottom-3"></div>
-                        </div>
-                    @elseif($profile && $profile->photo)
-                        <x-storage-image :path="$profile->photo" alt="Profile Photo" class="relative w-full h-full object-cover brutal-border grayscale hover:grayscale-0 transition duration-500 bg-white" style="width: 100%; height: 100%; object-fit: cover;" />
-                    @else
-                        <div class="relative w-full h-full bg-white brutal-border flex items-center justify-center text-6xl" style="width: 100%; height: 100%;">
-                            🤖
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>
@@ -568,21 +509,8 @@
         </div>
     </footer>
 
-    <!-- Swiper JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            if(document.querySelector('.heroSwiper') && typeof Swiper !== 'undefined') {
-                const swiper = new Swiper('.heroSwiper', {
-                    loop: true,
-                    autoplay: { delay: 5000, disableOnInteraction: false },
-                    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
-                    pagination: { el: '.swiper-pagination', clickable: true },
-                    effect: 'fade',
-                    fadeEffect: { crossFade: true }
-                });
-            }
-
             // Mobile Menu Toggle
             const btn = document.getElementById('mobile-menu-btn');
             const menu = document.getElementById('mobile-menu');
