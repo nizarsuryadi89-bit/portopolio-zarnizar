@@ -1,58 +1,103 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Zarnizar.com — Web Platform & Portofolio Digital
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Repositori resmi website **[zarnizar.com](https://zarnizar.com)** yang dibangun menggunakan **Laravel**, PHP 8.4, dan Vite. Platform ini mencakup portofolio profesional, layanan digital UMKM, showcase inovasi pendidikan (GTK 2026), serta microsite edukasi interaktif **Zarnizar Learning**.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🌟 Modul & Fitur Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. Website Utama & Layanan Digital (`/`)
+* **Profil & Portofolio:** Showcase karya pengembangan aplikasi web & mobile oleh Nizar Suryadi.
+* **Layanan Solusi Digital (`/jasa-aplikasi`):** Informasi konsultasi pembuatan website, sistem kasir, dan aplikasi kustom.
+* **KulaPOS (`/kulapos`):** Halaman produk aplikasi kasir offline berbasis Android untuk UMKM.
+* **Blog & Artikel Teknis (`/blog/{slug}`):** Tulisan seputar rekayasa perangkat lunak, teknologi, dan pendidikan.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 2. Showcase Apresiasi GTK 2026 (`/gtk2026`)
+* Presentasi interaktif 8 slide dedikasi digital pendidikan (*"Dari Kebutuhan Menjadi Pengabdian"*).
+* Ekosistem SASTI (Sistem Administrasi Terpadu Informatika) SMA Negeri 4 Tasikmalaya.
+* Modal arsip bukti pendukung tanpa login (`/gtk2026/evidence`).
 
-## Learning Laravel
+### 3. Zarnizar Learning — Pembelajaran Informatika XII (`/pembelajaran`)
+Microsite pembelajaran mandiri dan terpandu dengan fokus **Code Reading & Logic Tracing** kode program Python (4 Pertemuan / 8 JP):
+* **Pertemuan 1 (`/pembelajaran/pertemuan/1`):** Mengenal dan Membaca Kode Dasar Python (Variabel, tipe data, `print()`, alur sekuensial).
+* **Pertemuan 2 (`/pembelajaran/pertemuan/2`):** Memahami Operator dan Percabangan (`if`, `elif`, `else`, indentasi).
+* **Pertemuan 3 (`/pembelajaran/pertemuan/3`):** Membaca List dan Perulangan (Struktur list, perulangan `for`, akumulator nilai).
+* **Pertemuan 4 (`/pembelajaran/pertemuan/4`):** Python Code Reading Challenge (Tantangan logika komposit).
+* **Interactive Code Tracer:** Penelusuran eksekusi program baris demi baris lengkap dengan tabel *Memory Watch* dan simulasi layar terminal.
+* **In-Browser Python Playground:** Editor kode interaktif berbasis Skulpt yang aman di sisi klien (Client-Side) tanpa beban server.
+* **Asesmen Akhir (`/pembelajaran/asesmen`):** 10 soal membaca kode berbobot 100 poin dengan standar ketuntasan (KKTP) 75.
+* **Laporan Hasil Belajar (`/pembelajaran/hasil`):** Kartu capaian nilai, analisis benar/salah, pembahasan tiap nomor, dan fitur cetak/simpan PDF (`@media print`).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 4. Admin Dashboard (`/admin/dashboard`)
+* Pengelolaan portofolio, artikel, kegiatan, skills, profil, sliders, dan pengaturan situs.
+* Kartu pintasan akses langsung ke microsite pembelajaran.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 🛠️ Tech Stack & Ekosistem
 
-## Agentic Development
+* **Framework Backend:** Laravel 11.x / 13.x (PHP 8.4 via Laravel Herd)
+* **Frontend Pipeline:** Vite 8, Sass, Tailwind CSS, Bootstrap 5
+* **In-Browser Python Engine:** Skulpt (Python 3 client-side execution)
+* **Database:** MySQL / SQLite
+* **Testing:** Pest PHP (Feature & Unit Tests)
+* **Code Styler:** Laravel Pint
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
 
+## 💻 Panduan Menjalankan di Lokal
+
+### 1. Kloning Repositori & Instalasi Dependensi
 ```bash
-composer require laravel/boost --dev
+git clone https://github.com/nizarsuryadi89-bit/portopolio-zarnizar.git
+cd portopolio-zarnizar
 
-php artisan boost:install
+# Install dependensi PHP
+composer install
+
+# Install dependensi Node.js
+npm install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Konfigurasi Environment
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+Sesuaikan konfigurasi database di file `.env`.
 
-## Contributing
+### 3. Migrasi Database & Seed
+```bash
+php artisan migrate --seed
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 4. Kompilasi Asset & Menjalankan Server
+```bash
+# Terminal 1: Kompilasi asset Vite
+npm run dev
+# Atau untuk build production:
+npm run build
 
-## Code of Conduct
+# Terminal 2: Jalankan web server Laravel (jika tidak memakai Laravel Herd)
+php artisan serve
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 🧪 Menjalankan Pengujian (Tests)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Proyek ini dilengkapi suite pengujian otomatis menggunakan **Pest PHP**:
 
-## License
+```bash
+# Menjalankan seluruh pengujian modul Pembelajaran Python
+vendor/bin/pest --filter=pembelajaran
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Menjalankan seluruh test suite proyek
+vendor/bin/pest
+```
+
+---
+
+## 📝 Lisensi
+
+Hak cipta dilindungi undang-undang &copy; 2026 [Zarnizar.com](https://zarnizar.com) — Nizar Suryadi, S.T.
