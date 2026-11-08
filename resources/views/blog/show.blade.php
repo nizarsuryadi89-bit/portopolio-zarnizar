@@ -305,7 +305,7 @@
                     <a href="{{ route('site.home') }}#blog" class="btn btn-sm btn-primary text-white border-2 border-dark shadow-sm fw-bold">
                         <i class="bi bi-journal-text"></i> Artikel
                     </a>
-                    <a href="{{ route('site.home') }}#about" class="btn btn-sm btn-outline-dark border-2 d-none d-sm-inline-flex">
+                    <a href="{{ route('profil') }}" class="btn btn-sm btn-outline-dark border-2 d-none d-sm-inline-flex">
                         <i class="bi bi-person"></i> Profil
                     </a>
                     <a href="{{ route('pembelajaran.index') }}" class="btn btn-sm btn-warning border-2 border-dark text-dark fw-bold shadow-sm">
@@ -466,7 +466,7 @@
                             Guru Informatika di <strong>SMA Negeri 4 Tasikmalaya</strong>. Pengembang platform <em>Zarnizar Learning</em>, inisiator <em>SASTI</em>, dan peserta <strong>Apresiasi GTK 2026 Kategori Dedikatif</strong>.
                         </p>
                         <div class="d-flex flex-wrap gap-2">
-                            <a href="{{ route('site.home') }}#about" class="btn btn-sm btn-outline-dark border-2">
+                            <a href="{{ route('profil') }}" class="btn btn-sm btn-outline-dark border-2">
                                 <i class="bi bi-person"></i> Profil Lengkap
                             </a>
                             <a href="{{ route('pembelajaran.index') }}" class="btn btn-sm btn-primary border-2 border-dark text-white shadow-sm">
@@ -592,7 +592,7 @@
                         <a href="{{ route('pembelajaran.index') }}" class="badge text-bg-light border text-decoration-none">Pembelajaran</a>
                         <a href="{{ route('site.home') }}#portfolio" class="badge text-bg-light border text-decoration-none">Karya Inovasi</a>
                         <a href="{{ route('site.home') }}#blog" class="badge text-bg-primary text-decoration-none">Artikel</a>
-                        <a href="{{ route('site.home') }}#about" class="badge text-bg-light border text-decoration-none">Profil</a>
+                        <a href="{{ route('profil') }}" class="badge text-bg-light border text-decoration-none">Profil</a>
                     </div>
                     <div class="small text-secondary">
                         &copy; {{ date('Y') }} zarnizar.com. All rights reserved.

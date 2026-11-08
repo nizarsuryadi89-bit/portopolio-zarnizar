@@ -106,3 +106,14 @@ test('public images use WebP when available and fall back to the original otherw
 
     Storage::disk('public')->assertExists('portfolios/optimized.png.webp');
 });
+
+test('public profile page renders with teacher bio, skills, and system logs', function (): void {
+    $this->get(route('profil'))
+        ->assertOk()
+        ->assertSee('PROFIL GURU &amp; DEVELOPER', false)
+        ->assertSee('TECH STACK')
+        ->assertSee('SYSTEM LOGS (EXP)');
+
+    $this->get('/tentang')
+        ->assertRedirect(route('profil'));
+});

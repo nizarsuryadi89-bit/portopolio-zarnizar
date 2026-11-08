@@ -125,17 +125,20 @@
                         <span class="sales-kicker">Ruang Belajar, Teknologi &amp; Inovasi Digital</span>
                         <h1 class="sales-title">
                             @if(!empty($settings['sales_home_headline'])){{ $settings['sales_home_headline'] }}@else Ruang
-                            Belajar Koding, Logika &amp; <em>Inovasi Teknologi</em>@endif</h1>
+                            Belajar Koding, Logika &amp; <em>Inovasi Teknologi</em>@endif
+                        </h1>
                         <p class="sales-intro">
                             {{ ($settings['sales_home_intro'] ?? null) ?: 'Website personal dan ruang belajar interaktif: eksplorasi pemrograman, catatan teknologi pendidikan, serta dokumentasi karya dan inovasi digital oleh Nizar Suryadi, S.T.' }}
                         </p>
                         <div class="sales-actions">
                             <a href="#blog" class="sales-button">Baca Artikel <span aria-hidden="true">↓</span></a>
-                            <a href="#portfolio" class="sales-button sales-button-light">Lihat Portofolio <span aria-hidden="true">↓</span></a>
+                            <a href="#portfolio" class="sales-button sales-button-light">Lihat Portofolio <span
+                                    aria-hidden="true">↓</span></a>
                         </div>
-                        <p class="sales-footnote">Modul Pembelajaran Interaktif · Dokumentasi Karya · Catatan &amp; Artikel Teknologi</p>
+                        <p class="sales-footnote">Modul Pembelajaran Interaktif · Dokumentasi Karya · Catatan &amp; Artikel
+                            Teknologi</p>
                         <div class="flex flex-wrap items-center gap-3 mt-6">
-                            <a href="#about" class="sales-text-link">Kenali Profil Pengampu
+                            <a href="{{ route('profil') }}" class="sales-text-link">Kenali Profil &amp; Portofolio Pengampu
                                 ({{ $profile->name ?? 'Nizar Suryadi, S.T.' }}) →</a>
                             @if($profile && $profile->cv_file)
                                 <a href="{{ Storage::url($profile->cv_file) }}" target="_blank" rel="noopener noreferrer"
@@ -159,20 +162,20 @@
             </header>
 
             <!-- Marquee -->
-            <div class="marquee-container">
-                <div class="marquee-content font-bold uppercase tracking-widest text-lg">
-                    @for($i = 0; $i < 4; $i++)
-                        <span class="mx-4">• ZARNIZAR.COM</span>
-                        <span class="mx-4">• EDUKASI &amp; TEKNOLOGI</span>
-                        <span class="mx-4">• RUANG BELAJAR PYTHON</span>
-                        <span class="mx-4">• REKAYASA PERANGKAT LUNAK</span>
-                        <span class="mx-4">• INOVASI DIGITAL</span>
-                        <span class="mx-4">• CATATAN &amp; ARTIKEL</span>
-                        <span class="mx-4">• EKOSISTEM SASTI</span>
-                        <span class="mx-4">• APRESIASI GTK 2026</span>
-                    @endfor
-                </div>
-            </div>
+            <!-- <div class="marquee-container">
+                    <div class="marquee-content font-bold uppercase tracking-widest text-lg">
+                        @for($i = 0; $i < 4; $i++)
+                            <span class="mx-4">• ZARNIZAR.COM</span>
+                            <span class="mx-4">• EDUKASI &amp; TEKNOLOGI</span>
+                            <span class="mx-4">• RUANG BELAJAR PYTHON</span>
+                            <span class="mx-4">• REKAYASA PERANGKAT LUNAK</span>
+                            <span class="mx-4">• INOVASI DIGITAL</span>
+                            <span class="mx-4">• CATATAN &amp; ARTIKEL</span>
+                            <span class="mx-4">• EKOSISTEM SASTI</span>
+                            <span class="mx-4">• APRESIASI GTK 2026</span>
+                        @endfor
+                    </div>
+                </div> -->
         @endif
 
         @if($search === null || $search === '')
@@ -305,7 +308,8 @@
                                 <div class="p-6 flex-1 flex flex-col">
                                     <h3 class="text-2xl font-black uppercase tracking-tight mb-2">{{ $project->title }}</h3>
                                     <p class="text-sm font-medium mb-6 flex-1 line-clamp-3">
-                                        {{ Str::limit(strip_tags($project->description), 150) }}</p>
+                                        {{ Str::limit(strip_tags($project->description), 150) }}
+                                    </p>
                                     @if($project->slug)
                                         <a href="{{ route('portfolio.show', $project->slug) }}"
                                             class="w-full text-center bg-black text-white font-bold uppercase py-3 brutal-border hover:bg-navy-blue hover:text-white transition">
@@ -320,141 +324,18 @@
             </div>
         </section>
 
-        @if($search === null || $search === '')
-            <!-- About & Skills Layout (Split Grid) -->
-            <section class="border-b-[3px] border-black">
-                <div class="flex flex-col md:flex-row">
-                    <!-- About -->
-                    <div id="about"
-                        class="md:w-1/2 p-8 md:p-16 border-b-[3px] md:border-b-0 md:border-r-[3px] border-black bg-white">
-                        <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-4"><span
-                                class="bg-black text-white px-2">01</span> PROFIL GURU &amp; DEVELOPER</h2>
-                        <div
-                            class="inline-block bg-navy-blue text-white text-xs font-bold px-3 py-1 brutal-border uppercase mb-6 tracking-wider">
-                            Guru Informatika SMAN 4 Tasikmalaya · Peserta GTK 2026 Dedikatif
-                        </div>
-                        <div class="text-lg font-medium leading-relaxed whitespace-pre-line mb-8">
-                            {{ $profile->description ?? 'Guru Informatika di SMAN 4 Tasikmalaya dengan dedikasi mengintegrasikan teknologi dan rekayasa perangkat lunak dalam ekosistem pembelajaran modern.' }}
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            @if($profile && $profile->location)
-                                <div class="bg-[#f4f4f0] brutal-border p-4">
-                                    <div class="text-xs font-bold uppercase text-gray-500 mb-1">LOCATION</div>
-                                    <div class="font-bold">{{ $profile->location }}</div>
-                                </div>
-                            @endif
-                            @if($profile && $profile->email)
-                                <div class="bg-[#f4f4f0] brutal-border p-4">
-                                    <div class="text-xs font-bold uppercase text-gray-500 mb-1">EMAIL</div>
-                                    <div class="font-bold truncate">{{ $profile->email }}</div>
-                                </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <!-- Skills -->
-                    <div id="skills" class="md:w-1/2 p-8 md:p-16 bg-[#f4f4f0]">
-                        <h2 class="text-4xl font-black uppercase tracking-tighter mb-8"><span
-                                class="bg-navy-blue text-white px-2 brutal-border">02</span> TECH STACK</h2>
-
-                        @if($skills->isEmpty())
-                            <div class="bg-white brutal-border p-8 text-center font-bold">NO MODULES LOADED.</div>
-                        @else
-                            <div class="flex flex-wrap gap-4">
-                                @foreach($skills as $skill)
-                                    <div class="bg-white brutal-border brutal-shadow-hover p-4 flex flex-col justify-between"
-                                        style="width: calc(50% - 8px); min-width: 150px;">
-                                        <div class="flex justify-between items-start mb-4">
-                                            @if($skill->icon)
-                                                <i class="{{ $skill->icon }} text-3xl"></i>
-                                            @else
-                                                <i class="bi bi-cpu text-3xl"></i>
-                                            @endif
-                                            @if($skill->percentage)
-                                                <span class="font-black text-xl">{{ $skill->percentage }}%</span>
-                                            @endif
-                                        </div>
-                                        <div>
-                                            <div class="font-bold uppercase tracking-widest text-sm">{{ $skill->name }}</div>
-                                            @if($skill->category)
-                                                <div class="text-xs bg-black text-white px-1 inline-block mt-1">{{ $skill->category }}
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </section>
-
-            <!-- Experience & Education -->
-            <section class="py-16 md:py-24 border-b-[3px] border-black bg-white" id="experience">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <h2 class="text-4xl font-black uppercase tracking-tighter mb-12 text-center"><span
-                            class="bg-navy-blue text-white px-2 brutal-border">03</span> SYSTEM LOGS (EXP)</h2>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
-                        <!-- Experience -->
-                        <div>
-                            <h3 class="text-2xl font-black uppercase mb-6 border-b-[3px] border-black pb-2">WORK_HISTORY
-                            </h3>
-                            @forelse($experiences as $exp)
-                                <div class="mb-8 relative pl-6 border-l-[3px] border-black">
-                                    <div class="absolute w-4 h-4 bg-navy-blue brutal-border -left-[10px] top-1"></div>
-                                    <div class="text-xs font-bold uppercase bg-black text-white inline-block px-2 py-1 mb-2">
-                                        {{ \Carbon\Carbon::parse($exp->start_date)->format('M Y') }} -
-                                        @if($exp->is_current) PRESENT @else
-                                            {{ $exp->end_date ? \Carbon\Carbon::parse($exp->end_date)->format('M Y') : 'PRESENT' }}
-                                        @endif
-                                    </div>
-                                    <h4 class="text-xl font-bold uppercase">{{ $exp->position }}</h4>
-                                    <div class="font-bold text-navy-blue mb-2">{{ $exp->organization }}</div>
-                                    <p class="text-sm font-medium">{{ $exp->description }}</p>
-                                </div>
-                            @empty
-                                <p class="font-bold italic">No data found.</p>
-                            @endforelse
-                        </div>
-
-                        <!-- Education -->
-                        <div id="education">
-                            <h3 class="text-2xl font-black uppercase mb-6 border-b-[3px] border-black pb-2">TRAINING_DATA
-                            </h3>
-                            @forelse($educations as $edu)
-                                <div class="mb-8 bg-[#f4f4f0] brutal-border p-6 brutal-shadow">
-                                    <div class="flex justify-between items-start mb-2">
-                                        <h4 class="text-xl font-bold uppercase w-3/4">{{ $edu->institution }}</h4>
-                                        <span class="bg-black text-white text-xs font-bold px-2 py-1 brutal-border">
-                                            {{ $edu->start_year }} - {{ $edu->end_year ?? 'NOW' }}
-                                        </span>
-                                    </div>
-                                    <div class="font-bold text-lg border-b-2 border-dashed border-black pb-2 mb-2">
-                                        {{ $edu->degree }} in {{ $edu->field }}</div>
-                                    <p class="text-sm font-medium">{{ $edu->description }}</p>
-                                </div>
-                            @empty
-                                <p class="font-bold italic">No data found.</p>
-                            @endforelse
-                        </div>
-                    </div>
-                </div>
-            </section>
-        @endif
-
         <!-- Blog Section -->
         <section class="scroll-mt-24 py-16 md:py-24 border-b-[3px] border-black bg-white" id="blog">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4 text-center"><span
-                        class="bg-navy-blue text-white px-4 py-1 brutal-border">05</span> ARTIKEL &amp; CATATAN BELAJAR
+                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4 text-center">
+                    ARTIKEL &amp; CATATAN
                 </h2>
                 <p class="text-center font-bold text-gray-600 uppercase text-xs tracking-widest mb-12">Materi
                     Informatika · Tips Pemrograman · Dokumentasi Praktik Baik</p>
 
                 @if($blogPosts->isEmpty())
-                    <div class="bg-[#f4f4f0] brutal-border p-12 text-center font-bold text-2xl uppercase brutal-shadow">NO LOGS FOUND.</div>
+                    @php $noLogsFound = 'NO LOGS FOUND.'; @endphp
+                    <div class="bg-[#f4f4f0] brutal-border p-12 text-center font-bold text-2xl uppercase brutal-shadow">{{ $noLogsFound }}</div>
                 @else
                     <div class="space-y-8 max-w-5xl mx-auto">
                         @foreach($blogPosts as $post)
@@ -523,7 +404,8 @@
                     <div class="mt-10 space-y-4">
                         <p class="text-center text-sm font-bold">
                             @if($blogPosts->count() > 0)
-                                Menampilkan {{ $blogPosts->firstItem() }}–{{ $blogPosts->lastItem() }} dari {{ $blogPosts->total() }} artikel
+                                @php $pageSummary = "Menampilkan {$blogPosts->firstItem()}–{$blogPosts->lastItem()} dari {$blogPosts->total()} artikel"; @endphp
+                                {{ $pageSummary }}
                             @else
                                 {{ $blogPosts->total() }} artikel tersedia. Pilih halaman lain.
                             @endif
@@ -540,7 +422,8 @@
     <footer class="bg-black text-white py-12 border-t-[4px] border-navy-blue">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl font-black uppercase tracking-tighter text-stroke-white mb-2">
-                {{ $profile->name ?? 'Nizar Suryadi, S.T.' }}</h2>
+                {{ $profile->name ?? 'Nizar Suryadi, S.T.' }}
+            </h2>
             <p class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-6">Guru Informatika SMAN 4
                 Tasikmalaya · Media Pembelajaran &amp; Inovasi Digital</p>
 
@@ -550,6 +433,8 @@
                 <a href="{{ route('pembelajaran.asesmen') }}" class="text-gray-300 hover:text-white underline">Asesmen
                     10 Soal</a>
                 <a href="{{ route('gtk2026') }}" class="text-gray-300 hover:text-white underline">Apresiasi GTK 2026</a>
+                <a href="{{ route('profil') }}" class="text-gray-300 hover:text-white underline">Profil &amp;
+                    Portofolio</a>
                 <a href="{{ route('site.home') }}#portfolio" class="text-gray-300 hover:text-white underline">Karya
                     Inovasi</a>
                 <a href="{{ route('site.home') }}#blog" class="text-gray-300 hover:text-white underline">Artikel

@@ -11,7 +11,7 @@
                 <a href="{{ route('gtk2026') }}">Apresiasi GTK 2026</a>
                 <a href="{{ route('site.home') }}#portfolio">Karya &amp; Inovasi Digital</a>
                 <a href="{{ route('site.home') }}#blog">Artikel &amp; Catatan Belajar</a>
-                <a href="{{ route('site.home') }}#about">Tentang Guru Pengampu</a>
+                <a href="{{ route('profil') }}">Profil &amp; Portofolio Pengampu</a>
                 <hr class="border-gray-200 my-1">
                 <a href="{{ route('kulapos') }}" class="text-xs text-gray-600">Produk / KulaPOS</a>
                 <a href="{{ route('services') }}" class="text-xs text-gray-600">Konsultasi Layanan</a>
@@ -24,7 +24,7 @@
             <a href="{{ route('gtk2026') }}" @if(request()->is('gtk2026*')) aria-current="page" @endif>GTK 2026</a>
             <a href="{{ route('site.home') }}#portfolio">Karya Inovasi</a>
             <a href="{{ route('site.home') }}#blog">Artikel</a>
-            <a href="{{ route('site.home') }}#about">Profil</a>
+            <a href="{{ route('profil') }}" @if(request()->routeIs('profil')) class="font-bold text-navy-blue" @endif>Profil</a>
             <a href="{{ route('pembelajaran.index') }}" class="sales-nav-cta">Mulai Belajar <span aria-hidden="true">↗</span></a>
         </div>
     </div>

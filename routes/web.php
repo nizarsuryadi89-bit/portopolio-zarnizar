@@ -98,6 +98,20 @@ Route::get('/', function (Request $request): View {
     return view('welcome', compact('profile', 'skills', 'experiences', 'educations', 'socialLinks', 'portfolios', 'activities', 'blogPosts', 'groupedPosts', 'settings', 'sliders', 'search'));
 })->name('site.home');
 
+Route::get('/profil', function (): View {
+    $profile = Profile::first();
+    $skills = Skill::where('is_active', true)->orderBy('sort_order')->get();
+    $experiences = Experience::orderBy('sort_order')->orderBy('start_date', 'desc')->get();
+    $educations = Education::orderBy('sort_order')->orderBy('start_year', 'desc')->get();
+    $socialLinks = SocialLink::where('is_active', true)->orderBy('sort_order')->get();
+    $portfolios = Portfolio::where('is_active', true)->orderBy('sort_order')->orderBy('created_at', 'desc')->get();
+    $settings = Setting::pluck('value', 'key')->toArray();
+
+    return view('profile', compact('profile', 'skills', 'experiences', 'educations', 'socialLinks', 'portfolios', 'settings'));
+})->name('profil');
+
+Route::get('/tentang', fn () => redirect()->route('profil'));
+
 Route::get('/portfolio/{slug}', function (string $slug): View {
     $portfolio = Portfolio::where('slug', $slug)->where('is_active', true)->firstOrFail();
     $profile = Profile::first();

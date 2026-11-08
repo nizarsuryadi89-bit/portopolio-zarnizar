@@ -1,6 +1,6 @@
 @php echo '<'.'?xml version="1.0" encoding="UTF-8"?'.'>'; @endphp
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    @foreach(['site.home', 'pembelajaran.index', 'pembelajaran.asesmen', 'gtk2026', 'kulapos', 'services'] as $routeName)
+    @foreach(['site.home', 'profil', 'pembelajaran.index', 'pembelajaran.asesmen', 'gtk2026', 'kulapos', 'services'] as $routeName)
         <url><loc>{{ route($routeName) }}</loc></url>
     @endforeach
     @for($id = 1; $id <= 4; $id++)
