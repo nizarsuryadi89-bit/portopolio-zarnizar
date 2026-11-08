@@ -149,8 +149,8 @@
     <!-- Featured Learning & Innovation Section -->
     <section id="pembelajaran-unggulan" class="sales-section sales-white">
         <div class="sales-shell">
-            <p class="sales-eyebrow">Modul &amp; Ruang Pembelajaran</p>
-            <h2 class="sales-heading">Belajar Membaca &amp; Menulis Kode<br>dengan Cara yang Nyata &amp; Interaktif.</h2>
+            <p class="sales-eyebrow">Shortcut &amp; Akses Cepat</p>
+            <h2 class="sales-heading">Media Pembelajaran &amp; Karya Inovasi Digital.</h2>
             <div class="sales-grid sales-grid-two">
                 <article class="sales-card sales-card-blue flex flex-col justify-between">
                     <div>
@@ -193,53 +193,6 @@
                         <a href="{{ route('gtk2026') }}" class="sales-button w-full text-center">Pelajari Karya GTK 2026 →</a>
                     </div>
                 </article>
-            </div>
-
-            <!-- Quick Access Bar to 4 Meetings -->
-            <div class="mt-8 bg-[#f4f4f0] brutal-border brutal-shadow p-6">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-2 border-black pb-4 mb-4">
-                    <div>
-                        <span class="text-xs font-black uppercase tracking-wider bg-black text-white px-2 py-0.5 inline-block">Roadmap Belajar</span>
-                        <h4 class="text-xl font-black uppercase mt-1">4 Pertemuan Terstruktur Membaca &amp; Menulis Kode</h4>
-                    </div>
-                    <a href="{{ route('pembelajaran.asesmen') }}" class="text-xs font-bold uppercase tracking-wider bg-white brutal-border px-3 py-2 hover:bg-navy-blue hover:text-white transition inline-flex items-center gap-1 self-start md:self-auto">
-                        <i class="bi bi-check2-circle"></i> Langsung ke Asesmen (10 Soal) →
-                    </a>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <a href="{{ route('pembelajaran.pertemuan', 1) }}" class="bg-white brutal-border p-4 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#000] transition group flex flex-col justify-between">
-                        <div>
-                            <span class="text-[10px] font-black uppercase bg-navy-blue text-white px-1.5 py-0.5 inline-block mb-2">Pertemuan 1 · 2 JP</span>
-                            <div class="font-black text-sm uppercase group-hover:text-navy-blue transition">Variabel &amp; Tipe Data</div>
-                            <p class="text-xs text-gray-600 mt-1">Mental model kotak &amp; label, casting data, input/output.</p>
-                        </div>
-                        <span class="text-xs font-bold text-navy-blue mt-3 inline-block">Buka Modul 01 →</span>
-                    </a>
-                    <a href="{{ route('pembelajaran.pertemuan', 2) }}" class="bg-white brutal-border p-4 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#000] transition group flex flex-col justify-between">
-                        <div>
-                            <span class="text-[10px] font-black uppercase bg-navy-blue text-white px-1.5 py-0.5 inline-block mb-2">Pertemuan 2 · 2 JP</span>
-                            <div class="font-black text-sm uppercase group-hover:text-navy-blue transition">Percabangan IF-ELSE</div>
-                            <p class="text-xs text-gray-600 mt-1">Alur logika percabangan, kondisi jamak, nested decision.</p>
-                        </div>
-                        <span class="text-xs font-bold text-navy-blue mt-3 inline-block">Buka Modul 02 →</span>
-                    </a>
-                    <a href="{{ route('pembelajaran.pertemuan', 3) }}" class="bg-white brutal-border p-4 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#000] transition group flex flex-col justify-between">
-                        <div>
-                            <span class="text-[10px] font-black uppercase bg-navy-blue text-white px-1.5 py-0.5 inline-block mb-2">Pertemuan 3 · 2 JP</span>
-                            <div class="font-black text-sm uppercase group-hover:text-navy-blue transition">Perulangan &amp; Tracer</div>
-                            <p class="text-xs text-gray-600 mt-1">Iterasi for/while, pelacak nilai (tracer table) step-by-step.</p>
-                        </div>
-                        <span class="text-xs font-bold text-navy-blue mt-3 inline-block">Buka Modul 03 →</span>
-                    </a>
-                    <a href="{{ route('pembelajaran.pertemuan', 4) }}" class="bg-white brutal-border p-4 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#000] transition group flex flex-col justify-between">
-                        <div>
-                            <span class="text-[10px] font-black uppercase bg-navy-blue text-white px-1.5 py-0.5 inline-block mb-2">Pertemuan 4 · 2 JP</span>
-                            <div class="font-black text-sm uppercase group-hover:text-navy-blue transition">Fungsi &amp; Modulasi</div>
-                            <p class="text-xs text-gray-600 mt-1">Parameter, return value, dan memecah problem kompleks.</p>
-                        </div>
-                        <span class="text-xs font-bold text-navy-blue mt-3 inline-block">Buka Modul 04 →</span>
-                    </a>
-                </div>
             </div>
         </div>
     </section>
