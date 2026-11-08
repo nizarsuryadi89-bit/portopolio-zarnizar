@@ -67,6 +67,8 @@
             font-size: 1.125rem;
             line-height: 1.8;
             color: #000;
+            text-align: justify;
+            text-justify: inter-word;
         }
         .ck-content::after {
             content: "";
@@ -75,11 +77,12 @@
         }
         .ck-content p {
             margin-bottom: 1.5rem;
+            text-align: justify;
+            text-justify: inter-word;
         }
         .ck-content strong, .ck-content b {
             font-weight: 800;
-            background-color: #1e3a8a; color: #fff;
-            padding: 0 4px;
+            color: #000;
         }
         .ck-content a {
             font-weight: 700;
