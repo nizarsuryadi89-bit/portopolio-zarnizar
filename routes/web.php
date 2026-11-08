@@ -117,7 +117,7 @@ Route::get('/blog/{slug}', function (string $slug): View {
     $settings = Setting::pluck('value', 'key')->toArray();
     $socialLinks = SocialLink::where('is_active', true)->orderBy('sort_order')->get();
 
-    // Get related posts by tags
+    // Get related posts by tags or category
     $relatedPosts = collect();
     if ($post->tags->count() > 0) {
         $tagIds = $post->tags->pluck('id')->toArray();
@@ -129,7 +129,52 @@ Route::get('/blog/{slug}', function (string $slug): View {
             ->get();
     }
 
-    return view('blog.show', compact('post', 'profile', 'settings', 'socialLinks', 'relatedPosts'));
+    if ($relatedPosts->isEmpty() && $post->category_id) {
+        $relatedPosts = Post::where('category_id', $post->category_id)
+            ->where('id', '!=', $post->id)
+            ->where('is_published', true)
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+    }
+
+    if ($relatedPosts->isEmpty()) {
+        $relatedPosts = Post::where('id', '!=', $post->id)
+            ->where('is_published', true)
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+    }
+
+    $postDate = $post->published_at ?? $post->created_at;
+
+    $prevPost = Post::where('is_published', true)
+        ->where('id', '!=', $post->id)
+        ->where(function ($query) use ($postDate, $post) {
+            $query->where('published_at', '<', $postDate)
+                ->orWhere(function ($q) use ($postDate, $post) {
+                    $q->where('published_at', '=', $postDate)
+                        ->where('id', '<', $post->id);
+                });
+        })
+        ->orderBy('published_at', 'desc')
+        ->orderBy('id', 'desc')
+        ->first();
+
+    $nextPost = Post::where('is_published', true)
+        ->where('id', '!=', $post->id)
+        ->where(function ($query) use ($postDate, $post) {
+            $query->where('published_at', '>', $postDate)
+                ->orWhere(function ($q) use ($postDate, $post) {
+                    $q->where('published_at', '=', $postDate)
+                        ->where('id', '>', $post->id);
+                });
+        })
+        ->orderBy('published_at', 'asc')
+        ->orderBy('id', 'asc')
+        ->first();
+
+    return view('blog.show', compact('post', 'profile', 'settings', 'socialLinks', 'relatedPosts', 'prevPost', 'nextPost'));
 })->name('blog.show');
 
 Route::get('/kulapos', [LandingPageController::class, 'kulapos'])->name('kulapos');

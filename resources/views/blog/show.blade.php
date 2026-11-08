@@ -1,316 +1,643 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <x-marketing-head :title="$post->title.' | Zarnizar'" :description="Str::limit(preg_replace('/\s+/', ' ', strip_tags($post->content)), 160)" :canonical="url()->current()" :settings="$settings" :image="$post->image ? url(Storage::url($post->image)) : null" />
+    
+    <x-marketing-head 
+        :title="$post->title . ' | Zarnizar'" 
+        :description="Str::limit(preg_replace('/\s+/', ' ', strip_tags($post->content)), 160)" 
+        :canonical="url()->current()" 
+        :settings="$settings" 
+        :image="$post->image ? url(Storage::url($post->image)) : null" 
+    />
     
     @if(!empty($settings['favicon']))
-    <link rel="icon" href="{{ Storage::url($settings['favicon']) }}">
+        <link rel="icon" href="{{ Storage::url($settings['favicon']) }}">
+    @else
+        <link rel="icon" href="{{ asset('favicon.ico') }}">
     @endif
 
-    <!-- Fonts -->
+    <!-- Fonts: Space Grotesk & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- Styles / Scripts -->
+    <!-- Bootstrap 5 CSS Grid / Utilities -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Styles / Scoped Styles matching Zarnizar Learning -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @vite(['resources/css/pembelajaran.css'])
+    @else
+        <link rel="stylesheet" href="{{ asset('build/assets/pembelajaran.css') }}">
     @endif
     
     <style>
-        body { 
-            font-family: 'Space Grotesk', sans-serif; 
-            background-color: #f4f4f0;
-            background-image: radial-gradient(#000 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        
-        .brutal-border {
-            border: 3px solid #000;
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
         }
 
-        .brutal-shadow {
-            box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+        code, pre, .font-mono {
+            font-family: 'JetBrains Mono', monospace !important;
         }
 
-        .brutal-shadow-hover {
-            box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
-            transition: all 0.2s ease-in-out;
-        }
-        
-        .brutal-shadow-hover:hover {
-            box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
-            transform: translate(4px, 4px);
+        /* Reading Typography Optimized for Mobile & Desktop */
+        .zl-article-content {
+            font-size: 1.0625rem;
+            line-height: 1.85;
+            color: #1e293b;
+            word-break: break-word;
         }
 
-        .text-stroke {
-            -webkit-text-stroke: 2px #000;
-            color: transparent;
+        @media (min-width: 768px) {
+            .zl-article-content {
+                font-size: 1.125rem;
+                line-height: 1.9;
+            }
         }
 
-        .text-stroke-white {
-            -webkit-text-stroke: 1px #000;
-            color: #fff;
-        }
-
-                .bg-navy-blue { background-color: #1e3a8a; }
-        .text-navy-blue { color: #1e3a8a; }
-        .border-navy-blue { border-color: #1e3a8a; }
-
-        /* CKEditor Content Styling */
-        .ck-content {
-            font-size: 1.125rem;
-            line-height: 1.8;
-            color: #000;
-        }
-        .ck-content::after {
+        .zl-article-content::after {
             content: "";
             display: table;
             clear: both;
         }
-        .ck-content p {
+
+        .zl-article-content p {
             margin-bottom: 1.5rem;
-        }
-        .ck-content strong, .ck-content b {
-            font-weight: 800;
-            background-color: #1e3a8a; color: #fff;
-            padding: 0 4px;
-        }
-        .ck-content a {
-            font-weight: 700;
-            color: #1e3a8a;
-            text-decoration: underline;
-            text-decoration-thickness: 3px;
-            text-underline-offset: 4px;
-            transition: all 0.2s;
-        }
-        .ck-content a:hover {
-            background-color: #1e3a8a;
-            color: #fff;
-        }
-        .ck-content ul {
-            list-style-type: square;
-            padding-left: 2rem;
-            margin-bottom: 1.5rem;
-        }
-        .ck-content ol {
-            list-style-type: decimal-leading-zero;
-            padding-left: 2rem;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-        }
-        .ck-content li {
-            margin-bottom: 0.5rem;
-        }
-        .ck-content li p {
-            margin-bottom: 0.5rem;
+            color: #1e293b;
         }
 
-        /* CKEditor Images & Resizing */
-        .ck-content figure.image {
+        .zl-article-content strong,
+        .zl-article-content b {
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .zl-article-content a {
+            color: #1e3a8a;
+            font-weight: 600;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            transition: color 0.15s ease;
+        }
+
+        .zl-article-content a:hover {
+            color: #3b82f6;
+        }
+
+        .zl-article-content h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-top: 2.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #0f172a;
+            line-height: 1.35;
+        }
+
+        @media (min-width: 768px) {
+            .zl-article-content h2 {
+                font-size: 1.75rem;
+            }
+        }
+
+        .zl-article-content h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin-top: 2.25rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        @media (min-width: 768px) {
+            .zl-article-content h3 {
+                font-size: 1.4rem;
+            }
+        }
+
+        .zl-article-content h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-top: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .zl-article-content ul {
+            list-style-type: square;
+            padding-left: 1.75rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .zl-article-content ol {
+            list-style-type: decimal;
+            padding-left: 1.75rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .zl-article-content li {
+            margin-bottom: 0.65rem;
+            line-height: 1.75;
+        }
+
+        .zl-article-content blockquote {
+            border-left: 5px solid #1e3a8a;
+            background-color: #f8fafc;
+            border-top: 2px solid #0f172a;
+            border-right: 2px solid #0f172a;
+            border-bottom: 2px solid #0f172a;
+            border-radius: 8px;
+            box-shadow: 3px 3px 0px 0px rgba(15, 23, 42, 1);
+            padding: 1.25rem 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            font-weight: 500;
+            color: #334155;
+        }
+
+        .zl-article-content hr {
+            border: 0;
+            border-top: 2px dashed #94a3b8;
+            margin: 2.5rem 0;
+        }
+
+        .zl-article-content pre {
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 1.25rem;
+            border: 2px solid #0f172a;
+            border-radius: 8px;
+            box-shadow: 3px 3px 0px 0px rgba(15, 23, 42, 1);
+            margin: 2rem 0;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .zl-article-content code {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #e2e8f0;
+            color: #0f172a;
+            padding: 0.2rem 0.4rem;
+            font-size: 0.875em;
+            border-radius: 4px;
+        }
+
+        .zl-article-content pre code {
+            background-color: transparent;
+            padding: 0;
+            border: none;
+            color: inherit;
+            font-size: inherit;
+        }
+
+        /* Responsive Article Images (No float crush on mobile) */
+        .zl-article-content figure.image {
             margin: 2rem auto;
+            max-width: 100%;
             display: table;
             text-align: center;
-            max-width: 100%;
         }
-        .ck-content figure.image.image_resized {
-            max-width: 100%;
-            display: block;
-            box-sizing: border-box;
-        }
-        .ck-content figure.image img {
+
+        .zl-article-content figure.image img,
+        .zl-article-content img {
             width: 100%;
             height: auto;
-            border: 4px solid #000;
-            box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+            border: 2px solid #0f172a;
+            border-radius: 8px;
+            box-shadow: 4px 4px 0px 0px rgba(15, 23, 42, 1);
             display: block;
             margin: 0 auto;
         }
-        .ck-content figure.image figcaption {
+
+        .zl-article-content figure.image figcaption {
             margin-top: 0.75rem;
-            font-size: 0.875rem;
-            color: #4b5563;
+            font-size: 0.85rem;
+            color: #64748b;
             font-style: italic;
             text-align: center;
         }
-        .ck-content figure.image.image-style-side,
-        .ck-content figure.image.image-style-align-right,
-        .ck-content figure.image.image-style-block-align-right,
-        .ck-content .image-inline.image-style-align-right {
-            float: right;
-            margin: 1rem 0 1.5rem 2rem;
-            max-width: 50%;
-        }
-        .ck-content figure.image.image-style-align-left,
-        .ck-content figure.image.image-style-block-align-left,
-        .ck-content .image-inline.image-style-align-left {
-            float: left;
-            margin: 1rem 2rem 1.5rem 0;
-            max-width: 50%;
-        }
-        .ck-content figure.image.image-style-align-center {
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .ck-content .image-inline {
-            display: inline-flex;
-            max-width: 100%;
-            align-items: flex-start;
-            margin: 0.5rem;
-        }
-        .ck-content .image-inline img {
-            border: 3px solid #000;
-            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
-            max-width: 100%;
-            height: auto;
-        }
-        .ck-content > img,
-        .ck-content p > img {
-            max-width: 100%;
-            height: auto;
-            border: 4px solid #000;
-            box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
-            margin: 2rem auto;
-            display: block;
+
+        @media (min-width: 768px) {
+            .zl-article-content figure.image.image-style-side,
+            .zl-article-content figure.image.image-style-align-right {
+                float: right;
+                margin: 0.5rem 0 1.5rem 1.75rem;
+                max-width: 46%;
+            }
+
+            .zl-article-content figure.image.image-style-align-left {
+                float: left;
+                margin: 0.5rem 1.75rem 1.5rem 0;
+                max-width: 46%;
+            }
         }
 
-        .ck-content h2 {
-            font-size: 2.25rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin-top: 3rem;
-            margin-bottom: 1rem;
-            border-bottom: 4px solid #000;
-            padding-bottom: 0.5rem;
-            display: inline-block;
+        @media (max-width: 767px) {
+            .zl-article-content figure.image.image-style-side,
+            .zl-article-content figure.image.image-style-align-right,
+            .zl-article-content figure.image.image-style-align-left {
+                float: none !important;
+                margin: 1.5rem auto !important;
+                max-width: 100% !important;
+            }
         }
-        .ck-content h3 {
-            font-size: 1.75rem;
-            font-weight: 800;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-        }
-        .ck-content h4 {
-            font-size: 1.25rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-top: 1.5rem;
-            margin-bottom: 1rem;
-            background-color: #000;
-            color: #fff;
-            padding: 0.25rem 0.75rem;
-            display: inline-block;
-        }
-        .ck-content blockquote {
-            border-left: 6px solid #000;
-            background-color: #f4f4f0;
-            padding: 1.5rem;
-            margin: 2rem 0;
-            font-style: italic;
-            font-weight: 600;
-            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+
+        /* Line clamp utility */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
     </style>
 </head>
-<body class="text-gray-900 antialiased selection:bg-navy-blue selection:text-white">
-    
-    <x-sales-navigation />
+<body class="zl-app">
 
-    <!-- Main Content -->
-    <main class="py-12 lg:py-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div class="bg-white brutal-border brutal-shadow p-6 md:p-12">
-            <!-- Header -->
-            <div class="mb-8 border-b-[3px] border-black pb-8">
-                <div class="flex flex-wrap items-center gap-2 mb-6">
-                    <span class="bg-black text-white px-3 py-1 font-bold uppercase text-xs tracking-widest brutal-border">{{ \Carbon\Carbon::parse($post->published_at)->format('d F Y') }}</span>
-                    @if($post->category)
-                        <span class="bg-navy-blue text-white px-3 py-1 font-bold uppercase text-xs tracking-widest brutal-border">{{ $post->category->name }}</span>
+    <!-- Top Mini Notification Bar -->
+    <div class="bg-dark text-white py-2 px-3 zl-no-print border-bottom border-black">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2 small" style="max-width: 960px;">
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-mortarboard-fill text-warning"></i>
+                <span><strong>Ruang Edukasi &amp; Catatan Guru:</strong> Inovasi pembelajaran Informatika SMAN 4 Tasikmalaya.</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <a href="{{ route('pembelajaran.index') }}" class="text-warning text-decoration-none fw-semibold">
+                    <i class="bi bi-terminal"></i> Modul Python 8 JP &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navigation Bar matching Zarnizar Learning -->
+    <header class="zl-navbar zl-no-print">
+        <div class="container py-3" style="max-width: 960px;">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <!-- Brand -->
+                <a href="{{ route('site.home') }}" class="d-flex align-items-center gap-2 text-decoration-none text-dark">
+                    <div class="bg-primary text-white p-2 rounded-3 border border-2 border-dark shadow-sm">
+                        <i class="bi bi-journal-text fs-5"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold fs-5 lh-1 text-dark">ZARNIZAR <span class="text-primary">•</span> CATATAN BELAJAR</div>
+                        <div class="text-muted" style="font-size: 0.725rem; letter-spacing: 0.05em;">INFORMATIKA &bull; SMAN 4 TASIKMALAYA</div>
+                    </div>
+                </a>
+
+                <!-- Nav Links -->
+                <nav class="d-flex align-items-center flex-wrap gap-2">
+                    <a href="{{ route('site.home') }}" class="btn btn-sm btn-outline-dark border-2">
+                        <i class="bi bi-house-door"></i> Beranda
+                    </a>
+                    <a href="{{ route('pembelajaran.index') }}" class="btn btn-sm btn-outline-dark border-2">
+                        <i class="bi bi-mortarboard"></i> Pembelajaran
+                    </a>
+                    <a href="{{ route('site.home') }}#blog" class="btn btn-sm btn-primary text-white border-2 border-dark shadow-sm fw-bold">
+                        <i class="bi bi-newspaper"></i> Artikel
+                    </a>
+                    <a href="{{ route('gtk2026') }}" class="btn btn-sm btn-outline-dark border-2 d-none d-sm-inline-flex">
+                        <i class="bi bi-award"></i> GTK 2026
+                    </a>
+                    <a href="{{ route('pembelajaran.index') }}" class="btn btn-sm btn-warning border-2 border-dark text-dark fw-bold shadow-sm">
+                        Mulai Belajar <i class="bi bi-arrow-up-right"></i>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content Container -->
+    <main class="flex-grow-1 py-4 py-lg-5">
+        <div class="container" style="max-width: 960px;">
+
+            <!-- Breadcrumb & Top Action Navigation -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{{ route('site.home') }}" class="text-decoration-none text-secondary">Beranda</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('site.home') }}#blog" class="text-decoration-none text-secondary">Artikel</a></li>
+                        @if($post->category)
+                            <li class="breadcrumb-item active fw-bold text-dark" aria-current="page">{{ $post->category->name }}</li>
+                        @endif
+                    </ol>
+                </nav>
+
+                <div class="d-flex align-items-center gap-2">
+                    @if($prevPost)
+                        <a href="{{ route('blog.show', $prevPost->slug) }}" class="btn btn-sm btn-outline-dark border-2" title="{{ $prevPost->title }}">
+                            <i class="bi bi-chevron-left"></i> <span class="d-none d-sm-inline">Sebelumnya</span>
+                        </a>
                     @endif
-                    <span class="bg-[#f4f4f0] text-black px-3 py-1 font-bold uppercase text-xs tracking-widest brutal-border flex items-center">
-                        <i class="bi bi-eye mr-2"></i> {{ number_format($post->views) }} VIEWS
+
+                    <a href="{{ route('site.home') }}#blog" class="btn btn-sm btn-outline-dark border-2">
+                        <i class="bi bi-arrow-left"></i> Semua Artikel
+                    </a>
+
+                    @if($nextPost)
+                        <a href="{{ route('blog.show', $nextPost->slug) }}" class="btn btn-sm btn-primary border-2 border-dark text-white shadow-sm" title="{{ $nextPost->title }}">
+                            <span class="d-none d-sm-inline">Selanjutnya</span> <i class="bi bi-chevron-right"></i>
+                        </a>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Article Header Card -->
+            <article class="zl-card p-4 p-md-5 mb-4 bg-white">
+                
+                <!-- Category, Date, Read Time Badges -->
+                <div class="d-flex flex-wrap items-center gap-2 mb-3">
+                    @if($post->category)
+                        <span class="zl-badge zl-badge-primary">
+                            <i class="bi bi-tag-fill me-1"></i> {{ $post->category->name }}
+                        </span>
+                    @endif
+                    <span class="zl-badge zl-badge-dark">
+                        <i class="bi bi-calendar3 me-1"></i> {{ \Carbon\Carbon::parse($post->published_at ?? $post->created_at)->translatedFormat('d F Y') }}
+                    </span>
+                    @php
+                        $wordCount = str_word_count(strip_tags($post->content));
+                        $readingTime = max(1, (int) ceil($wordCount / 200));
+                    @endphp
+                    <span class="zl-badge zl-badge-warning">
+                        <i class="bi bi-clock me-1"></i> ~{{ $readingTime }} mnt baca
+                    </span>
+                    <span class="zl-badge bg-light text-dark border border-dark">
+                        <i class="bi bi-eye me-1"></i> {{ number_format($post->views) }} views
                     </span>
                 </div>
-                <h1 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-6">{{ $post->title }}</h1>
-            </div>
 
-            <!-- Image Thumbnail -->
+                <!-- Main Title -->
+                <h1 class="h2 fw-bold text-dark mb-3 lh-sm" style="letter-spacing: -0.02em;">
+                    {{ $post->title }}
+                </h1>
+
+                <!-- Author & Share Action Bar -->
+                <div class="p-3 bg-light rounded-3 border border-2 border-secondary-subtle d-flex align-items-center justify-content-between flex-wrap gap-3 mt-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 44px; height: 44px; font-size: 1rem; border: 2px solid #0f172a;">
+                            NS
+                        </div>
+                        <div>
+                            <div class="fw-bold text-dark lh-1 mb-1">{{ $profile->name ?? 'Nizar Suryadi, S.T.' }}</div>
+                            <div class="text-secondary small">Guru Informatika SMAN 4 Tasikmalaya &bull; GTK Dedikatif 2026</div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        @php
+                            $shareUrl = url()->current();
+                            $shareText = rawurlencode($post->title . ' — ' . $shareUrl);
+                        @endphp
+                        <a href="https://api.whatsapp.com/send?text={{ $shareText }}" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-success border-2 border-dark shadow-sm">
+                            <i class="bi bi-whatsapp"></i> Bagikan
+                        </a>
+                        <button type="button" onclick="copyCurrentUrl()" class="btn btn-sm btn-outline-dark border-2">
+                            <i class="bi bi-link-45deg"></i> <span id="copy-btn-text">Salin Link</span>
+                        </button>
+                    </div>
+                </div>
+
+            </article>
+
+            <!-- Featured Image (if available) -->
             @if($post->image)
-                <div class="mb-12 border-[3px] border-black bg-gray-200">
-                    <x-storage-image :path="$post->image" alt="{{ $post->title }}" class="w-full h-auto object-cover max-h-[600px] grayscale hover:grayscale-0 transition duration-500" />
+                <div class="zl-card p-2 bg-white mb-4 text-center overflow-hidden">
+                    <x-storage-image :path="$post->image" alt="{{ $post->title }}" class="img-fluid rounded-3 w-100" style="max-height: 520px; object-fit: cover;" />
                 </div>
             @endif
 
-            <!-- Description / Content -->
-            <div>
-                <div class="ck-content prose prose-lg max-w-none font-medium leading-relaxed">
+            <!-- Article Body Content Card -->
+            <div class="zl-card p-4 p-md-5 bg-white mb-4">
+                <div class="zl-article-content">
                     {!! $post->content !!}
                 </div>
+
+                <!-- Tags / Topics -->
+                @if($post->tags && count($post->tags) > 0)
+                    <div class="pt-4 mt-5 border-top border-2 border-secondary-subtle d-flex flex-wrap align-items-center gap-2">
+                        <span class="small fw-bold text-dark"><i class="bi bi-tags-fill me-1"></i> Topik Terkait:</span>
+                        @foreach($post->tags as $tag)
+                            <span class="zl-badge bg-light text-dark">#{{ $tag->name }}</span>
+                        @endforeach
+                    </div>
+                @endif
             </div>
 
-            @if($post->tags && count($post->tags) > 0)
-            <div class="mt-12 pt-8 border-t-[3px] border-black flex flex-wrap gap-2">
-                <span class="font-bold uppercase tracking-widest text-sm mr-2 flex items-center">TAGS:</span>
-                @foreach($post->tags as $tag)
-                    <span class="bg-[#f4f4f0] text-black px-3 py-1 font-bold text-xs uppercase brutal-border">#{{ $tag->name }}</span>
-                @endforeach
+            <!-- Share & Feedback Card -->
+            <div class="zl-card p-4 bg-light mb-4">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+                    <div>
+                        <div class="small text-uppercase fw-bold text-muted mb-1">Berbagi Pengetahuan</div>
+                        <h3 class="h5 fw-bold text-dark mb-0">Bermanfaat? Bagikan Catatan Belajar Ini</h3>
+                        <p class="text-secondary small mb-0 mt-1">Bantu rekan guru, siswa, atau pegiat pendidikan menemukan referensi ini.</p>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 shrink-0">
+                        <a href="https://api.whatsapp.com/send?text={{ $shareText }}" target="_blank" rel="noopener noreferrer" class="zl-btn zl-btn-success text-white">
+                            <i class="bi bi-whatsapp"></i> WhatsApp
+                        </a>
+                        <button type="button" onclick="copyCurrentUrl()" class="zl-btn zl-btn-outline">
+                            <i class="bi bi-link-45deg"></i> Salin Tautan
+                        </button>
+                    </div>
+                </div>
             </div>
-            @endif
-            
+
+            <!-- Author Profile Card -->
+            <div class="zl-card p-4 bg-white mb-4">
+                <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 64px; height: 64px; font-size: 1.4rem; border: 2px solid #0f172a;">
+                            NS
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="text-uppercase small fw-bold text-primary mb-1">Guru Pengampu &bull; Penulis</div>
+                        <h2 class="h5 fw-bold text-dark mb-1">{{ $profile->name ?? 'Nizar Suryadi, S.T.' }}</h2>
+                        <p class="text-secondary small mb-2">
+                            Guru Informatika di <strong>SMA Negeri 4 Tasikmalaya</strong>. Pengembang platform <em>Zarnizar Learning</em>, inisiator <em>SASTI</em>, dan peserta <strong>Apresiasi GTK 2026 Kategori Dedikatif</strong>.
+                        </p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="{{ route('site.home') }}#about" class="btn btn-sm btn-outline-dark border-2">
+                                <i class="bi bi-person"></i> Profil Lengkap
+                            </a>
+                            <a href="{{ route('pembelajaran.index') }}" class="btn btn-sm btn-primary border-2 border-dark text-white shadow-sm">
+                                <i class="bi bi-mortarboard"></i> Ruang Belajar Python
+                            </a>
+                            <a href="{{ route('gtk2026') }}" class="btn btn-sm btn-outline-dark border-2">
+                                <i class="bi bi-award"></i> Karya GTK 2026
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Previous & Next Article Navigation Cards -->
+            <div class="row g-3 mb-5">
+                <div class="col-md-6">
+                    @if($prevPost)
+                        <a href="{{ route('blog.show', $prevPost->slug) }}" class="zl-card zl-card-hover p-3 p-md-4 bg-white h-100 text-decoration-none text-dark d-block">
+                            <div class="small text-secondary fw-semibold mb-1">
+                                <i class="bi bi-arrow-left"></i> Artikel Sebelumnya
+                            </div>
+                            <div class="fw-bold text-dark line-clamp-2">
+                                {{ $prevPost->title }}
+                            </div>
+                            <div class="small text-muted mt-2">
+                                <i class="bi bi-calendar3"></i> {{ \Carbon\Carbon::parse($prevPost->published_at ?? $prevPost->created_at)->translatedFormat('d M Y') }}
+                            </div>
+                        </a>
+                    @else
+                        <div class="zl-card p-3 p-md-4 bg-light text-secondary h-100 opacity-75">
+                            <div class="small fw-semibold mb-1"><i class="bi bi-arrow-left"></i> Artikel Sebelumnya</div>
+                            <div class="small">Ini adalah artikel terawal dalam arsip.</div>
+                        </div>
+                    @endif
+                </div>
+
+                <div class="col-md-6">
+                    @if($nextPost)
+                        <a href="{{ route('blog.show', $nextPost->slug) }}" class="zl-card zl-card-hover p-3 p-md-4 bg-white h-100 text-decoration-none text-dark d-block text-md-end">
+                            <div class="small text-secondary fw-semibold mb-1">
+                                Artikel Berikutnya <i class="bi bi-arrow-right"></i>
+                            </div>
+                            <div class="fw-bold text-dark line-clamp-2">
+                                {{ $nextPost->title }}
+                            </div>
+                            <div class="small text-muted mt-2">
+                                <i class="bi bi-calendar3"></i> {{ \Carbon\Carbon::parse($nextPost->published_at ?? $nextPost->created_at)->translatedFormat('d M Y') }}
+                            </div>
+                        </a>
+                    @else
+                        <div class="zl-card p-3 p-md-4 bg-light text-secondary h-100 text-md-end opacity-75">
+                            <div class="small fw-semibold mb-1">Artikel Berikutnya <i class="bi bi-arrow-right"></i></div>
+                            <div class="small">Ini adalah artikel terbaru saat ini.</div>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            <!-- Related Articles Recommendations -->
             @if(isset($relatedPosts) && $relatedPosts->count() > 0)
-                <div class="mt-16 pt-12 border-t-[3px] border-black">
-                    <h3 class="text-3xl font-black uppercase tracking-tighter mb-8"><span class="bg-navy-blue text-white px-2 brutal-border">RELATED</span> LOGS</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        @foreach($relatedPosts as $relPost)
-                            <div class="bg-[#f4f4f0] brutal-border brutal-shadow-hover transition flex flex-col h-full">
-                                @if($relPost->image)
-                                    <div class="border-b-[3px] border-black bg-white aspect-video relative">
-                                        <x-storage-image :path="$relPost->image" loading="lazy" alt="Thumbnail" class="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition duration-300" />
+                <div class="mb-5">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="zl-badge zl-badge-primary">Rekomendasi</span>
+                            <h2 class="h4 fw-bold text-dark mb-0">Artikel &amp; Catatan Terkait</h2>
+                        </div>
+                        <a href="{{ route('site.home') }}#blog" class="small fw-bold text-dark text-decoration-none">
+                            Lihat Semua <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="row g-3">
+                        @foreach($relatedPosts as $rel)
+                            <div class="col-md-4">
+                                <a href="{{ route('blog.show', $rel->slug) }}" class="zl-card zl-card-hover p-4 bg-white h-100 text-decoration-none text-dark d-flex flex-column">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        @if($rel->category)
+                                            <span class="zl-badge zl-badge-primary" style="font-size: 0.65rem;">
+                                                {{ $rel->category->name }}
+                                            </span>
+                                        @endif
+                                        <span class="text-muted small" style="font-size: 0.75rem;">
+                                            {{ \Carbon\Carbon::parse($rel->published_at ?? $rel->created_at)->translatedFormat('d M Y') }}
+                                        </span>
                                     </div>
-                                @endif
-                                <div class="p-5 flex flex-col flex-1">
-                                    <div class="flex items-center gap-2 mb-2 text-[10px] font-bold uppercase">
-                                        <span class="bg-black text-white px-2 py-1">{{ \Carbon\Carbon::parse($relPost->published_at)->format('d M Y') }}</span>
+                                    <h3 class="h6 fw-bold text-dark mb-2 line-clamp-2">
+                                        {{ $rel->title }}
+                                    </h3>
+                                    <p class="text-secondary small mb-3 flex-grow-1 line-clamp-2">
+                                        {{ Str::limit(strip_tags($rel->content), 90) }}
+                                    </p>
+                                    <div class="small text-primary fw-bold mt-auto">
+                                        Baca Catatan &rarr;
                                     </div>
-                                    <h4 class="text-lg font-black uppercase leading-tight mb-3 line-clamp-2" title="{{ $relPost->title }}">{{ $relPost->title }}</h4>
-                                    <div class="mt-auto pt-2">
-                                        <a href="{{ route('blog.show', $relPost->slug) }}" class="inline-block border-b-[2px] border-black font-bold uppercase text-[10px] tracking-widest hover:text-navy-blue hover:border-navy-blue transition">READ LOG -></a>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                         @endforeach
                     </div>
                 </div>
             @endif
-            
+
         </div>
-        
     </main>
 
-    <x-sales-contact source="blog" />
-    <!-- Footer -->
-    <footer class="bg-black text-white py-8 border-t-[4px] border-navy-blue mt-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-black uppercase tracking-tighter text-stroke-white mb-6">{{ $profile->name ?? 'SYSTEM_END' }}</h2>
-            
-            <div class="flex justify-center gap-4 mb-6">
-                @foreach($socialLinks as $link)
-                    <a href="{{ $link->url }}" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white text-black brutal-border hover:bg-navy-blue hover:text-white transition flex items-center justify-center text-lg">
-                        <i class="{{ $link->icon ?? 'bi bi-link-45deg' }}"></i>
-                    </a>
-                @endforeach
-            </div>
-            
-            <div class="font-bold uppercase tracking-widest text-xs text-gray-400">
-                &copy; {{ date('Y') }} {{ $profile->name ?? '' }}
+    <!-- Footer matching Zarnizar Learning -->
+    <footer class="bg-white border-top border-2 border-dark py-4 mt-5 zl-no-print">
+        <div class="container" style="max-width: 960px;">
+            <div class="row g-4 align-items-center">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                        <span class="fw-bold fs-5">Zarnizar Learning</span>
+                    </div>
+                    <p class="text-muted small mb-1">
+                        Media Pembelajaran Informatika &bull; <strong>SMA Negeri 4 Tasikmalaya</strong>.
+                    </p>
+                    <p class="text-muted small mb-0">
+                        Guru Pengampu: <strong>{{ $profile->name ?? 'Nizar Suryadi, S.T.' }}</strong> (Peserta GTK Dedikatif 2026).
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="d-flex justify-content-md-end flex-wrap gap-2 mb-2">
+                        <a href="{{ route('site.home') }}" class="badge text-bg-light border text-decoration-none">Beranda</a>
+                        <a href="{{ route('pembelajaran.index') }}" class="badge text-bg-light border text-decoration-none">Pembelajaran</a>
+                        <a href="{{ route('site.home') }}#blog" class="badge text-bg-light border text-decoration-none">Artikel</a>
+                        <a href="{{ route('gtk2026') }}" class="badge text-bg-light border text-decoration-none">GTK 2026</a>
+                        <a href="{{ route('site.home') }}#about" class="badge text-bg-primary text-decoration-none">Profil Guru</a>
+                    </div>
+                    <div class="small text-secondary">
+                        &copy; {{ date('Y') }} zarnizar.com. Menumbuhkan nalar komputasional &amp; inovasi teknologi pendidikan.
+                    </div>
+                </div>
             </div>
         </div>
     </footer>
 
+    <!-- Toast Notification for Copied Link -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050;">
+        <div id="copyToast" class="toast align-items-center text-bg-dark border-2 border-dark shadow" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                    <span>Tautan artikel berhasil disalin ke clipboard!</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function copyCurrentUrl() {
+            navigator.clipboard.writeText(window.location.href).then(function() {
+                var toastEl = document.getElementById('copyToast');
+                if (toastEl) {
+                    var toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+                    toast.show();
+                }
+                var btnText = document.getElementById('copy-btn-text');
+                if (btnText) {
+                    var orig = btnText.innerText;
+                    btnText.innerText = 'Tersalin!';
+                    setTimeout(function() {
+                        btnText.innerText = orig;
+                    }, 2000);
+                }
+            }).catch(function() {
+                alert('Tautan disalin: ' + window.location.href);
+            });
+        }
+    </script>
 </body>
 </html>
