@@ -280,34 +280,15 @@
 </head>
 <body class="zl-app">
 
-    <!-- Top Mini Notification Bar -->
-    <div class="bg-dark text-white py-2 px-3 zl-no-print border-bottom border-black">
-        <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2 small" style="max-width: 960px;">
-            <div class="d-flex align-items-center gap-2">
-                <i class="bi bi-mortarboard-fill text-warning"></i>
-                <span><strong>Ruang Edukasi &amp; Catatan Guru:</strong> Inovasi pembelajaran Informatika SMAN 4 Tasikmalaya.</span>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-                <a href="{{ route('pembelajaran.index') }}" class="text-warning text-decoration-none fw-semibold">
-                    <i class="bi bi-terminal"></i> Modul Python 8 JP &rarr;
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Navigation Bar matching Zarnizar Learning -->
+    <!-- Main Navigation Bar (General Site Header) -->
     <header class="zl-navbar zl-no-print">
         <div class="container py-3" style="max-width: 960px;">
             <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
                 <!-- Brand -->
-                <a href="{{ route('site.home') }}" class="d-flex align-items-center gap-2 text-decoration-none text-dark">
-                    <div class="bg-primary text-white p-2 rounded-3 border border-2 border-dark shadow-sm">
-                        <i class="bi bi-journal-text fs-5"></i>
-                    </div>
-                    <div>
-                        <div class="fw-bold fs-5 lh-1 text-dark">ZARNIZAR <span class="text-primary">•</span> CATATAN BELAJAR</div>
-                        <div class="text-muted" style="font-size: 0.725rem; letter-spacing: 0.05em;">INFORMATIKA &bull; SMAN 4 TASIKMALAYA</div>
-                    </div>
+                <a href="{{ route('site.home') }}" class="d-flex align-items-center text-decoration-none text-dark">
+                    <span class="fw-bold fs-4 text-dark" style="letter-spacing: -0.02em;">
+                        Z<span class="text-secondary">/</span> ZARNIZAR<span class="text-primary">.</span>
+                    </span>
                 </a>
 
                 <!-- Nav Links -->
@@ -318,11 +299,14 @@
                     <a href="{{ route('pembelajaran.index') }}" class="btn btn-sm btn-outline-dark border-2">
                         <i class="bi bi-mortarboard"></i> Pembelajaran
                     </a>
-                    <a href="{{ route('site.home') }}#blog" class="btn btn-sm btn-primary text-white border-2 border-dark shadow-sm fw-bold">
-                        <i class="bi bi-newspaper"></i> Artikel
+                    <a href="{{ route('site.home') }}#portfolio" class="btn btn-sm btn-outline-dark border-2 d-none d-md-inline-flex">
+                        <i class="bi bi-grid-fill"></i> Karya Inovasi
                     </a>
-                    <a href="{{ route('gtk2026') }}" class="btn btn-sm btn-outline-dark border-2 d-none d-sm-inline-flex">
-                        <i class="bi bi-award"></i> GTK 2026
+                    <a href="{{ route('site.home') }}#blog" class="btn btn-sm btn-primary text-white border-2 border-dark shadow-sm fw-bold">
+                        <i class="bi bi-journal-text"></i> Artikel
+                    </a>
+                    <a href="{{ route('site.home') }}#about" class="btn btn-sm btn-outline-dark border-2 d-none d-sm-inline-flex">
+                        <i class="bi bi-person"></i> Profil
                     </a>
                     <a href="{{ route('pembelajaran.index') }}" class="btn btn-sm btn-warning border-2 border-dark text-dark fw-bold shadow-sm">
                         Mulai Belajar <i class="bi bi-arrow-up-right"></i>
@@ -405,7 +389,7 @@
                         </div>
                         <div>
                             <div class="fw-bold text-dark lh-1 mb-1">{{ $profile->name ?? 'Nizar Suryadi, S.T.' }}</div>
-                            <div class="text-secondary small">Guru Informatika SMAN 4 Tasikmalaya &bull; GTK Dedikatif 2026</div>
+                            <div class="text-secondary small">Pendidik &bull; Praktisi Teknologi Digital</div>
                         </div>
                     </div>
                     <div class="d-flex align-items-center gap-2">
@@ -587,32 +571,31 @@
         </div>
     </main>
 
-    <!-- Footer matching Zarnizar Learning -->
+    <!-- Footer -->
     <footer class="bg-white border-top border-2 border-dark py-4 mt-5 zl-no-print">
         <div class="container" style="max-width: 960px;">
             <div class="row g-4 align-items-center">
                 <div class="col-md-6">
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
-                        <span class="fw-bold fs-5">Zarnizar Learning</span>
+                        <span class="fw-bold fs-5 text-dark">Z<span class="text-secondary">/</span> ZARNIZAR<span class="text-primary">.</span></span>
                     </div>
                     <p class="text-muted small mb-1">
-                        Media Pembelajaran Informatika &bull; <strong>SMA Negeri 4 Tasikmalaya</strong>.
+                        Publikasi Artikel, Dokumentasi Karya &amp; Ruang Belajar Digital.
                     </p>
                     <p class="text-muted small mb-0">
-                        Guru Pengampu: <strong>{{ $profile->name ?? 'Nizar Suryadi, S.T.' }}</strong> (Peserta GTK Dedikatif 2026).
+                        Oleh: <strong>{{ $profile->name ?? 'Nizar Suryadi, S.T.' }}</strong>
                     </p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <div class="d-flex justify-content-md-end flex-wrap gap-2 mb-2">
                         <a href="{{ route('site.home') }}" class="badge text-bg-light border text-decoration-none">Beranda</a>
                         <a href="{{ route('pembelajaran.index') }}" class="badge text-bg-light border text-decoration-none">Pembelajaran</a>
-                        <a href="{{ route('site.home') }}#blog" class="badge text-bg-light border text-decoration-none">Artikel</a>
-                        <a href="{{ route('gtk2026') }}" class="badge text-bg-light border text-decoration-none">GTK 2026</a>
-                        <a href="{{ route('site.home') }}#about" class="badge text-bg-primary text-decoration-none">Profil Guru</a>
+                        <a href="{{ route('site.home') }}#portfolio" class="badge text-bg-light border text-decoration-none">Karya Inovasi</a>
+                        <a href="{{ route('site.home') }}#blog" class="badge text-bg-primary text-decoration-none">Artikel</a>
+                        <a href="{{ route('site.home') }}#about" class="badge text-bg-light border text-decoration-none">Profil</a>
                     </div>
                     <div class="small text-secondary">
-                        &copy; {{ date('Y') }} zarnizar.com. Menumbuhkan nalar komputasional &amp; inovasi teknologi pendidikan.
+                        &copy; {{ date('Y') }} zarnizar.com. All rights reserved.
                     </div>
                 </div>
             </div>
