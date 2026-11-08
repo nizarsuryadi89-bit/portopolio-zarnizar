@@ -381,37 +381,59 @@
             <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4 text-center"><span class="bg-navy-blue text-white px-4 py-1 brutal-border">05</span> ARTIKEL &amp; CATATAN BELAJAR</h2>
             <p class="text-center font-bold text-gray-600 uppercase text-xs tracking-widest mb-12">Materi Informatika · Tips Pemrograman · Dokumentasi Praktik Baik</p>
             
-            @if($groupedPosts->isEmpty())
+            @if($blogPosts->isEmpty())
                 <div class="bg-[#f4f4f0] brutal-border p-12 text-center font-bold text-2xl uppercase brutal-shadow">NO LOGS FOUND.</div>
             @else
-                <div class="space-y-12">
-                    @foreach($groupedPosts as $categoryName => $months)
-                        <div class="bg-[#f4f4f0] brutal-border brutal-shadow p-6 md:p-10">
-                            <h3 class="text-3xl font-black uppercase tracking-tight mb-8 border-b-[3px] border-black pb-4 inline-block">{{ $categoryName }}</h3>
-                            
-                            <div class="space-y-8">
-                                @foreach($months as $monthName => $monthlyPosts)
-                                    <div>
-                                        <h4 class="text-xl font-bold uppercase bg-black text-white px-3 py-1 inline-block mb-4">{{ $monthName }}</h4>
-                                        <ul class="space-y-4">
-                                            @foreach($monthlyPosts as $post)
-                                                <li class="flex flex-col md:flex-row md:items-center justify-between bg-white brutal-border p-4 hover:bg-navy-blue hover:text-white transition group">
-                                                    <div class="flex-1">
-                                                        <h5 class="text-lg font-black uppercase leading-tight group-hover:text-white mb-2 md:mb-0">{{ $post->title }}</h5>
-                                                        <p class="text-sm font-medium line-clamp-1 group-hover:text-gray-200 text-gray-600">{{ Str::limit(strip_tags($post->content), 80) }}</p>
-                                                    </div>
-                                                    <div class="mt-4 md:mt-0 flex items-center gap-4 text-xs font-bold uppercase">
-                                                        <span><i class="bi bi-eye mr-1"></i> {{ number_format($post->views) }}</span>
-                                                        <span>{{ \Carbon\Carbon::parse($post->published_at)->format('d M') }}</span>
-                                                        <a href="{{ route('blog.show', $post->slug) }}" class="bg-black text-white px-4 py-2 group-hover:bg-white group-hover:text-black transition">READ -></a>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        </ul>
+                <div class="space-y-8 max-w-5xl mx-auto">
+                    @foreach($blogPosts as $post)
+                        <article class="bg-white brutal-border brutal-shadow hover:-translate-y-1 hover:shadow-[6px_6px_0px_#000] transition flex flex-col md:flex-row overflow-hidden group">
+                            @if($post->image)
+                                <div class="md:w-72 lg:w-80 h-48 md:h-auto border-b-[3px] md:border-b-0 md:border-r-[3px] border-black bg-gray-100 overflow-hidden relative shrink-0">
+                                    <x-storage-image :path="$post->image" loading="lazy" alt="{{ $post->title }}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-300" />
+                                </div>
+                            @else
+                                <div class="md:w-72 lg:w-80 h-48 md:h-auto border-b-[3px] md:border-b-0 md:border-r-[3px] border-black bg-[#f4f4f0] flex items-center justify-center text-5xl shrink-0">
+                                    📰
+                                </div>
+                            @endif
+
+                            <div class="p-6 md:p-8 flex-1 flex flex-col justify-between">
+                                <div>
+                                    <div class="flex flex-wrap items-center gap-2 mb-3 text-xs font-bold uppercase">
+                                        <span class="bg-navy-blue text-white px-2.5 py-0.5 brutal-border">
+                                            {{ $post->category ? $post->category->name : 'Uncategorized' }}
+                                        </span>
+                                        <span class="text-gray-400 font-semibold">•</span>
+                                        <span class="text-gray-700">
+                                            {{ ($post->published_at ?? $post->created_at)->format('d F Y') }}
+                                        </span>
+                                        <span class="text-gray-400 font-semibold">•</span>
+                                        <span class="text-gray-700"><i class="bi bi-eye me-1"></i>{{ number_format($post->views) }} views</span>
                                     </div>
-                                @endforeach
+
+                                    <h3 class="text-xl md:text-2xl font-black uppercase tracking-tight group-hover:text-navy-blue transition mb-3">
+                                        <a href="{{ route('blog.show', $post->slug) }}" class="text-black group-hover:text-navy-blue transition">
+                                            {{ $post->title }}
+                                        </a>
+                                    </h3>
+
+                                    <p class="text-sm font-medium text-gray-700 line-clamp-2 md:line-clamp-3 mb-4 leading-relaxed">
+                                        {{ Str::limit(strip_tags($post->content), 180) }}
+                                    </p>
+                                </div>
+
+                                <div class="pt-4 border-t-2 border-dashed border-gray-200 flex items-center justify-between">
+                                    <a href="{{ route('blog.show', $post->slug) }}" class="inline-flex items-center gap-1.5 font-bold uppercase text-xs tracking-wider text-black group-hover:text-navy-blue transition bg-white px-3 py-1.5 brutal-border brutal-shadow-hover">
+                                        BACA ARTIKEL <span aria-hidden="true">→</span>
+                                    </a>
+                                    @if($post->published_at)
+                                        <span class="text-xs font-bold uppercase text-gray-500">
+                                            {{ $post->published_at->format('F Y') }}
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
+                        </article>
                     @endforeach
                 </div>
             @endif
