@@ -182,6 +182,18 @@
             display: block;
         }
 
+        @media (max-width: 767px) {
+            .ck-content figure.image.image-style-side,
+            .ck-content figure.image.image-style-align-right,
+            .ck-content figure.image.image-style-align-left,
+            .ck-content .image-inline.image-style-align-right,
+            .ck-content .image-inline.image-style-align-left {
+                float: none !important;
+                margin: 1.5rem auto !important;
+                max-width: 100% !important;
+            }
+        }
+
         .ck-content h2 {
             font-size: 2.25rem;
             font-weight: 900;
