@@ -14,7 +14,7 @@ test('public sales pages have canonical SEO and no analytics until configured', 
         ->assertSee('name="twitter:card"', false)
         ->assertDontSee('googletagmanager.com/gtag/js');
 })->with([
-    ['/', 'Zarnizar — Developer Aplikasi &amp; Solusi Digital Tasikmalaya'],
+    ['/', 'Zarnizar — Media Pembelajaran Informatika &amp; Inovasi Teknologi Pendidikan'],
     ['/kulapos', 'KulaPOS — Aplikasi Kasir Offline UMKM | Zarnizar'],
     ['/jasa-aplikasi', 'Jasa Pembuatan Aplikasi Web Tasikmalaya | Zarnizar'],
 ]);
@@ -80,8 +80,17 @@ test('sitemap includes sales pages and published content while excluding drafts 
     $document = simplexml_load_string($response->getContent());
     $locations = array_map(fn ($url): string => (string) $url->loc, iterator_to_array($document->url, false));
 
-    expect($locations)->toContain(url('/'), url('/kulapos'), url('/jasa-aplikasi'), route('blog.show', $post->slug), route('portfolio.show', $project->slug))
-        ->not->toContain(route('blog.show', $draft->slug), route('portfolio.show', $privateProject->slug), url('/login'), url('/admin/marketing'));
+    expect($locations)->toContain(
+        url('/'),
+        route('pembelajaran.index'),
+        route('pembelajaran.asesmen'),
+        route('gtk2026'),
+        route('pembelajaran.pertemuan', 1),
+        url('/kulapos'),
+        url('/jasa-aplikasi'),
+        route('blog.show', $post->slug),
+        route('portfolio.show', $project->slug)
+    )->not->toContain(route('blog.show', $draft->slug), route('portfolio.show', $privateProject->slug), url('/login'), url('/admin/marketing'));
 });
 
 test('valid GA4 configuration loads once per page and search pages remain noindex', function (): void {

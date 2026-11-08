@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <x-marketing-head :title="($settings['sales_home_title'] ?? null) ?: 'Zarnizar — Developer Aplikasi & Solusi Digital Tasikmalaya'" :description="($settings['sales_home_description'] ?? null) ?: 'Zarnizar membantu UMKM dan bisnis dengan aplikasi kasir offline, website usaha, dan sistem informasi sesuai kebutuhan. Berbasis di Tasikmalaya, melayani konsultasi online.'" :canonical="route('site.home', request()->integer('blog_page') > 1 ? ['blog_page' => request()->integer('blog_page')] : [])" :settings="$settings" :robots="$search !== null && $search !== '' ? 'noindex, follow' : 'index, follow'" />
+    <x-marketing-head :title="($settings['sales_home_title'] ?? null) ?: 'Zarnizar — Media Pembelajaran Informatika & Inovasi Teknologi Pendidikan'" :description="($settings['sales_home_description'] ?? null) ?: 'Platform edukasi Informatika, koding Python interaktif dengan visual tracing, asesmen mandiri, dan karya inovasi pendidikan oleh Nizar Suryadi, S.T. (Guru SMAN 4 Tasikmalaya).'" :canonical="route('site.home', request()->integer('blog_page') > 1 ? ['blog_page' => request()->integer('blog_page')] : [])" :settings="$settings" :robots="$search !== null && $search !== '' ? 'noindex, follow' : 'index, follow'" />
     @if(!empty($settings['favicon']))
     <link rel="icon" href="{{ Storage::url($settings['favicon']) }}">
     @endif
@@ -103,16 +103,16 @@
     <header class="sales-home-hero py-12 lg:py-20 overflow-hidden border-b-[3px] border-black bg-[#f4f4f0]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center gap-6 relative">
             <div class="md:w-2/3 relative z-10">
-                <span class="sales-kicker">Solusi Digital untuk UMKM & Bisnis</span>
-                <h1 class="sales-title">@if(!empty($settings['sales_home_headline'])){{ $settings['sales_home_headline'] }}@else Aplikasi dan Website yang Membantu Bisnis <em>Bekerja Lebih Rapi</em>@endif</h1>
-                <p class="sales-intro">{{ ($settings['sales_home_intro'] ?? null) ?: 'Zarnizar membantu UMKM dan bisnis membangun sistem kasir, pengelolaan stok, laporan, serta aplikasi web sesuai kebutuhan. Berbasis di Tasikmalaya, melayani konsultasi online.' }}</p>
+                <span class="sales-kicker">Media Pembelajaran Informatika · SMAN 4 Tasikmalaya</span>
+                <h1 class="sales-title">@if(!empty($settings['sales_home_headline'])){{ $settings['sales_home_headline'] }}@else Ruang Belajar Koding, Logika &amp; <em>Inovasi Teknologi Pendidikan</em>@endif</h1>
+                <p class="sales-intro">{{ ($settings['sales_home_intro'] ?? null) ?: 'Platform belajar pemrograman Python interaktif dengan visual tracing, latihan menulis kode langsung di browser, serta dokumentasi inovasi digital pembelajaran karya Nizar Suryadi, S.T. (Guru Informatika SMAN 4 Tasikmalaya / Peserta GTK 2026 Dedikatif).' }}</p>
                 <div class="sales-actions">
-                    <a href="{{ route('kulapos') }}" class="sales-button">Lihat KulaPOS <span aria-hidden="true">→</span></a>
-                    <a href="{{ route('services') }}" class="sales-button sales-button-light">Konsultasi Aplikasi <span aria-hidden="true">↗</span></a>
+                    <a href="{{ route('pembelajaran.index') }}" class="sales-button">Mulai Belajar Python (8 JP) <span aria-hidden="true">→</span></a>
+                    <a href="{{ route('gtk2026') }}" class="sales-button sales-button-light">Karya Inovasi GTK 2026 <span aria-hidden="true">↗</span></a>
                 </div>
-                <p class="sales-footnote">Kasir Android offline · Website bisnis · Sistem sesuai kebutuhan</p>
+                <p class="sales-footnote">Visual Code Tracer · In-Browser Python Playground · Lembar Kerja &amp; Asesmen Mandiri</p>
                 <div class="flex flex-wrap items-center gap-3 mt-6">
-                    <a href="#about" class="sales-text-link">Kenali {{ $profile->name ?? 'Nizar Suryadi' }} →</a>
+                    <a href="#about" class="sales-text-link">Kenali Guru Pengampu ({{ $profile->name ?? 'Nizar Suryadi, S.T.' }}) →</a>
                     @if($profile && $profile->cv_file)
                         <a href="{{ Storage::url($profile->cv_file) }}" target="_blank" rel="noopener noreferrer" class="bg-white text-black font-bold uppercase tracking-widest px-4 py-2 text-[10px] brutal-border brutal-shadow-hover transition inline-flex items-center">
                             Download CV <i class="bi bi-download ml-1"></i>
@@ -176,40 +176,114 @@
     <div class="marquee-container">
         <div class="marquee-content font-bold uppercase tracking-widest text-lg">
             @for($i=0; $i<4; $i++)
-                <span class="mx-4">• KASIR OFFLINE</span>
-                <span class="mx-4">• WEBSITE BISNIS</span>
-                <span class="mx-4">• SISTEM INFORMASI</span>
-                <span class="mx-4">• TAILWIND</span>
-                <span class="mx-4">• GOLANG</span>
-                <span class="mx-4">• MYSQL</span>
-                <span class="mx-4">• DOCKER</span>
-                <span class="mx-4">• KUBERNETES</span>
-                <span class="mx-4">• API</span>
+                <span class="mx-4">• ZARNIZAR LEARNING</span>
+                <span class="mx-4">• INFORMATIKA KELAS XII</span>
+                <span class="mx-4">• MEMBACA KODE PYTHON</span>
+                <span class="mx-4">• VISUAL CODE TRACER</span>
+                <span class="mx-4">• IN-BROWSER PLAYGROUND</span>
+                <span class="mx-4">• GTK 2026 DEDIKATIF</span>
+                <span class="mx-4">• EKOSISTEM SASTI SMAN 4 TASIKMALAYA</span>
+                <span class="mx-4">• ASESMEN INTERAKTIF</span>
             @endfor
         </div>
     </div>
     @endif
 
     @if($search === null || $search === '')
-    <section id="layanan" class="sales-section sales-white">
+    <!-- Featured Learning & Innovation Section -->
+    <section id="pembelajaran-unggulan" class="sales-section sales-white">
         <div class="sales-shell">
-            <p class="sales-eyebrow">Produk & layanan</p>
-            <h2 class="sales-heading">Satu langkah lebih rapi<br>untuk usaha Anda.</h2>
+            <p class="sales-eyebrow">Modul &amp; Ruang Pembelajaran</p>
+            <h2 class="sales-heading">Belajar Membaca &amp; Menulis Kode<br>dengan Cara yang Nyata &amp; Interaktif.</h2>
             <div class="sales-grid sales-grid-two">
-                <article class="sales-card sales-card-blue">
-                    <p class="sales-eyebrow">01 / Produk · Android · Offline</p>
-                    <h3 style="font-size: 36px">KulaPOS.</h3>
-                    <p>Aplikasi kasir offline untuk UMKM yang ingin beralih dari pencatatan manual. Lihat demo untuk menilai kecocokan dengan toko Anda.</p>
-                    <p><s>Rp750.000</s> <strong style="font-size: 28px; color: var(--sales-lime)">Rp500.000</strong><br><span class="sales-small">Harga peluncuran/piloting. Cakupan mengikuti penawaran.</span></p>
-                    <a href="{{ route('kulapos') }}" class="sales-button sales-button-lime">Kenali KulaPOS →</a>
+                <article class="sales-card sales-card-blue flex flex-col justify-between">
+                    <div>
+                        <div class="inline-flex items-center gap-2 bg-white text-navy-blue text-xs font-black px-2.5 py-1 brutal-border uppercase tracking-wider mb-4">
+                            <i class="bi bi-mortarboard-fill"></i> Modul Unggulan · 8 Jam Pelajaran
+                        </div>
+                        <h3 style="font-size: 32px; line-height: 1.15;" class="font-black mb-3">Zarnizar Learning: Membaca Kode Python.</h3>
+                        <p class="text-white/90 text-sm leading-relaxed mb-4">
+                            Modul interaktif 4 pertemuan terstruktur untuk siswa SMA/SMK dan pemula. Memahami alur eksekusi variabel, percabangan IF-ELSE, perulangan FOR/WHILE, hingga fungsi dengan <strong>Visual Code Tracer</strong> dan <strong>In-Browser Python Playground</strong>.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 text-xs font-bold text-white mb-6">
+                            <div class="bg-black/30 p-2 brutal-border">✓ 4 Modul Interaktif</div>
+                            <div class="bg-black/30 p-2 brutal-border">✓ Visual Trace Table</div>
+                            <div class="bg-black/30 p-2 brutal-border">✓ Run Python di Browser</div>
+                            <div class="bg-black/30 p-2 brutal-border">✓ 10 Soal Asesmen Mandiri</div>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="{{ route('pembelajaran.index') }}" class="sales-button sales-button-lime w-full text-center">Masuk ke Ruang Belajar Python →</a>
+                    </div>
                 </article>
-                <article class="sales-card">
-                    <p class="sales-eyebrow">02 / Layanan · Web · Sistem informasi</p>
-                    <h3 style="font-size: 36px">Dibangun untuk alur Anda.</h3>
-                    <p>Dari website usaha, pesanan dan inventori, hingga ERP percetakan. Mulai dari kendala yang ingin diselesaikan.</p>
-                    <p><strong>Penawaran sesuai ruang lingkup.</strong><br><span class="sales-small">Diskusi → analisis → penawaran → pengerjaan → uji coba.</span></p>
-                    <a href="{{ route('services') }}" class="sales-button">Jelajahi Layanan →</a>
+
+                <article class="sales-card flex flex-col justify-between bg-[#f4f4f0]">
+                    <div>
+                        <div class="inline-flex items-center gap-2 bg-navy-blue text-white text-xs font-black px-2.5 py-1 brutal-border uppercase tracking-wider mb-4">
+                            <i class="bi bi-award-fill"></i> Inovasi Pembelajaran · GTK 2026
+                        </div>
+                        <h3 style="font-size: 32px; line-height: 1.15;" class="font-black mb-3">Dari Kebutuhan Menjadi Pengabdian.</h3>
+                        <p class="text-gray-700 text-sm leading-relaxed mb-4">
+                            Praktik baik dan karya inovasi digital pendidikan: <strong>SASTI (Sistem Administrasi &amp; Sarana Terintegrasi SMAN 4 Tasikmalaya)</strong>. Menjawab kendala nyata di sekolah melalui transformasi digital berbasis kemandirian.
+                        </p>
+                        <div class="grid grid-cols-2 gap-2 text-xs font-bold text-gray-800 mb-6">
+                            <div class="bg-white p-2 brutal-border">📄 Naskah Praktik Baik</div>
+                            <div class="bg-white p-2 brutal-border">🎥 Video Dokumentasi</div>
+                            <div class="bg-white p-2 brutal-border">📊 Bukti Karya &amp; Dampak</div>
+                            <div class="bg-white p-2 brutal-border">💡 Presenter Interaktif</div>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="{{ route('gtk2026') }}" class="sales-button w-full text-center">Pelajari Karya GTK 2026 →</a>
+                    </div>
                 </article>
+            </div>
+
+            <!-- Quick Access Bar to 4 Meetings -->
+            <div class="mt-8 bg-[#f4f4f0] brutal-border brutal-shadow p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-2 border-black pb-4 mb-4">
+                    <div>
+                        <span class="text-xs font-black uppercase tracking-wider bg-black text-white px-2 py-0.5 inline-block">Roadmap Belajar</span>
+                        <h4 class="text-xl font-black uppercase mt-1">4 Pertemuan Terstruktur Membaca &amp; Menulis Kode</h4>
+                    </div>
+                    <a href="{{ route('pembelajaran.asesmen') }}" class="text-xs font-bold uppercase tracking-wider bg-white brutal-border px-3 py-2 hover:bg-navy-blue hover:text-white transition inline-flex items-center gap-1 self-start md:self-auto">
+                        <i class="bi bi-check2-circle"></i> Langsung ke Asesmen (10 Soal) →
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <a href="{{ route('pembelajaran.pertemuan', 1) }}" class="bg-white brutal-border p-4 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#000] transition group flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] font-black uppercase bg-navy-blue text-white px-1.5 py-0.5 inline-block mb-2">Pertemuan 1 · 2 JP</span>
+                            <div class="font-black text-sm uppercase group-hover:text-navy-blue transition">Variabel &amp; Tipe Data</div>
+                            <p class="text-xs text-gray-600 mt-1">Mental model kotak &amp; label, casting data, input/output.</p>
+                        </div>
+                        <span class="text-xs font-bold text-navy-blue mt-3 inline-block">Buka Modul 01 →</span>
+                    </a>
+                    <a href="{{ route('pembelajaran.pertemuan', 2) }}" class="bg-white brutal-border p-4 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#000] transition group flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] font-black uppercase bg-navy-blue text-white px-1.5 py-0.5 inline-block mb-2">Pertemuan 2 · 2 JP</span>
+                            <div class="font-black text-sm uppercase group-hover:text-navy-blue transition">Percabangan IF-ELSE</div>
+                            <p class="text-xs text-gray-600 mt-1">Alur logika percabangan, kondisi jamak, nested decision.</p>
+                        </div>
+                        <span class="text-xs font-bold text-navy-blue mt-3 inline-block">Buka Modul 02 →</span>
+                    </a>
+                    <a href="{{ route('pembelajaran.pertemuan', 3) }}" class="bg-white brutal-border p-4 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#000] transition group flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] font-black uppercase bg-navy-blue text-white px-1.5 py-0.5 inline-block mb-2">Pertemuan 3 · 2 JP</span>
+                            <div class="font-black text-sm uppercase group-hover:text-navy-blue transition">Perulangan &amp; Tracer</div>
+                            <p class="text-xs text-gray-600 mt-1">Iterasi for/while, pelacak nilai (tracer table) step-by-step.</p>
+                        </div>
+                        <span class="text-xs font-bold text-navy-blue mt-3 inline-block">Buka Modul 03 →</span>
+                    </a>
+                    <a href="{{ route('pembelajaran.pertemuan', 4) }}" class="bg-white brutal-border p-4 hover:-translate-y-1 hover:shadow-[4px_4px_0_0_#000] transition group flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] font-black uppercase bg-navy-blue text-white px-1.5 py-0.5 inline-block mb-2">Pertemuan 4 · 2 JP</span>
+                            <div class="font-black text-sm uppercase group-hover:text-navy-blue transition">Fungsi &amp; Modulasi</div>
+                            <p class="text-xs text-gray-600 mt-1">Parameter, return value, dan memecah problem kompleks.</p>
+                        </div>
+                        <span class="text-xs font-bold text-navy-blue mt-3 inline-block">Buka Modul 04 →</span>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -235,11 +309,15 @@
         </div>
     </div>
 
-    <!-- Portfolio -->
+    <!-- Portfolio & Inovasi Digital -->
     <section class="py-16 md:py-24 border-b-[3px] border-black bg-[#f4f4f0]" id="portfolio">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-end mb-12">
-                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter">Pengalaman Membangun Sistem Nyata</h2>
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+                <div>
+                    <span class="text-xs font-black uppercase tracking-wider bg-navy-blue text-white px-2 py-0.5 brutal-border inline-block mb-2">Inovasi Digital &amp; Rekayasa Sistem</span>
+                    <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tighter">Karya &amp; Ekosistem Teknologi Pendidikan</h2>
+                </div>
+                <p class="text-sm font-medium text-gray-700 max-w-md">Kumpulan aplikasi, sistem manajemen sekolah (SASTI), kasir UMKM, dan platform digital yang dibangun untuk menjawab tantangan operasional nyata.</p>
             </div>
             
             @if($portfolios->isEmpty())
@@ -282,9 +360,12 @@
         <div class="flex flex-col md:flex-row">
             <!-- About -->
             <div id="about" class="md:w-1/2 p-8 md:p-16 border-b-[3px] md:border-b-0 md:border-r-[3px] border-black bg-white">
-                <h2 class="text-4xl font-black uppercase tracking-tighter mb-8"><span class="bg-black text-white px-2">01</span> TENTANG DEVELOPER</h2>
+                <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-4"><span class="bg-black text-white px-2">01</span> PROFIL GURU &amp; DEVELOPER</h2>
+                <div class="inline-block bg-navy-blue text-white text-xs font-bold px-3 py-1 brutal-border uppercase mb-6 tracking-wider">
+                    Guru Informatika SMAN 4 Tasikmalaya · Peserta GTK 2026 Dedikatif
+                </div>
                 <div class="text-lg font-medium leading-relaxed whitespace-pre-line mb-8">
-                    {{ $profile->description ?? 'SYSTEM_INIT. A passionate developer focusing on robust and scalable solutions.' }}
+                    {{ $profile->description ?? 'Guru Informatika di SMAN 4 Tasikmalaya dengan dedikasi mengintegrasikan teknologi dan rekayasa perangkat lunak dalam ekosistem pembelajaran modern.' }}
                 </div>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -388,7 +469,8 @@
     <!-- Blog Section -->
     <section class="scroll-mt-24 py-16 md:py-24 border-b-[3px] border-black bg-white" id="blog">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-12 text-center"><span class="bg-navy-blue text-white px-4 py-1 brutal-border">05</span> ARTIKEL & CATATAN</h2>
+            <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4 text-center"><span class="bg-navy-blue text-white px-4 py-1 brutal-border">05</span> ARTIKEL &amp; CATATAN BELAJAR</h2>
+            <p class="text-center font-bold text-gray-600 uppercase text-xs tracking-widest mb-12">Materi Informatika · Tips Pemrograman · Dokumentasi Praktik Baik</p>
             
             @if($groupedPosts->isEmpty())
                 <div class="bg-[#f4f4f0] brutal-border p-12 text-center font-bold text-2xl uppercase brutal-shadow">NO LOGS FOUND.</div>
@@ -442,10 +524,20 @@
     <x-sales-contact source="home" />
     </main>
     <!-- Footer -->
-    <footer class="bg-black text-white py-8 border-t-[4px] border-navy-blue">
+    <footer class="bg-black text-white py-12 border-t-[4px] border-navy-blue">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-black uppercase tracking-tighter text-stroke-white mb-6">{{ $profile->name ?? 'SYSTEM_END' }}</h2>
+            <h2 class="text-3xl font-black uppercase tracking-tighter text-stroke-white mb-2">{{ $profile->name ?? 'Nizar Suryadi, S.T.' }}</h2>
+            <p class="text-xs uppercase font-bold tracking-widest text-gray-400 mb-6">Guru Informatika SMAN 4 Tasikmalaya · Media Pembelajaran &amp; Inovasi Digital</p>
             
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-8 text-xs font-bold uppercase tracking-wider">
+                <a href="{{ route('pembelajaran.index') }}" class="text-gray-300 hover:text-white underline">Pembelajaran Python</a>
+                <a href="{{ route('pembelajaran.asesmen') }}" class="text-gray-300 hover:text-white underline">Asesmen 10 Soal</a>
+                <a href="{{ route('gtk2026') }}" class="text-gray-300 hover:text-white underline">Apresiasi GTK 2026</a>
+                <a href="{{ route('site.home') }}#portfolio" class="text-gray-300 hover:text-white underline">Karya Inovasi</a>
+                <a href="{{ route('site.home') }}#blog" class="text-gray-300 hover:text-white underline">Artikel Belajar</a>
+                <a href="{{ route('kulapos') }}" class="text-gray-400 hover:text-gray-200">KulaPOS</a>
+            </div>
+
             <div class="flex justify-center gap-4 mb-6">
                 @foreach($socialLinks as $link)
                     <a href="{{ $link->url }}" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-white text-black brutal-border hover:bg-navy-blue hover:text-white transition flex items-center justify-center text-lg">
@@ -454,9 +546,9 @@
                 @endforeach
             </div>
             
-            <a href="{{ route('login') }}" class="inline-block text-sm underline mb-6">Login admin</a>
-            <div class="font-bold uppercase tracking-widest text-xs text-gray-400">
-                &copy; {{ date('Y') }} {{ $profile->name ?? '' }}
+            <a href="{{ route('login') }}" class="inline-block text-xs text-gray-400 underline mb-4">Login admin</a>
+            <div class="font-bold uppercase tracking-widest text-xs text-gray-500">
+                &copy; {{ date('Y') }} {{ $profile->name ?? 'Nizar Suryadi, S.T.' }}. All Rights Reserved.
             </div>
         </div>
     </footer>
