@@ -1,0 +1,65 @@
+{
+  "resources/css/admin-mobile.css": {
+    "file": "assets/admin-mobile-DRbSr_Jw.css",
+    "name": "admin-mobile",
+    "names": [
+      "admin-mobile.css"
+    ],
+    "src": "resources/css/admin-mobile.css",
+    "isEntry": true
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-Imi_LQXD.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/gtk2026.css": {
+    "file": "assets/gtk2026-D21-PUH3.css",
+    "name": "gtk2026",
+    "names": [
+      "gtk2026.css"
+    ],
+    "src": "resources/css/gtk2026.css",
+    "isEntry": true
+  },
+  "resources/css/pembelajaran.css": {
+    "file": "assets/pembelajaran-OiELogi2.css",
+    "name": "pembelajaran",
+    "names": [
+      "pembelajaran.css"
+    ],
+    "src": "resources/css/pembelajaran.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-C4_XyJ5-.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/gtk2026.js": {
+    "file": "assets/gtk2026-awV1haj2.js",
+    "name": "gtk2026",
+    "src": "resources/js/gtk2026.js",
+    "isEntry": true
+  },
+  "resources/js/pembelajaran.js": {
+    "file": "assets/pembelajaran-B1jZatzd.js",
+    "name": "pembelajaran",
+    "src": "resources/js/pembelajaran.js",
+    "isEntry": true
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-CLGcoBhR.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/sass/app.scss",
+    "isEntry": true
+  }
+}

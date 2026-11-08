@@ -1,0 +1,4 @@
+<div class="gtk-impacts"><article class="gtk-impact gtk-impact-bk"><x-gtk-icon name="heart" /><h3>BK / Pendampingan</h3><p>Setiap tindak lanjut memiliki alur.</p><ol class="gtk-bk-flow">@foreach($gtk['bk_flow'] as $step)<li>{{ $step }}</li>@endforeach</ol><button class="gtk-inline-link gtk-js-only" data-evidence-target="bk" type="button">Lihat bukti <span>↗</span></button></article>
+@foreach($gtk['impacts'] as $impact)<article class="gtk-impact"><x-gtk-icon :name="$impact['icon']" /><h3>{{ $impact['title'] }}</h3><p>{{ $impact['text'] }}</p></article>@endforeach
+<article class="gtk-impact gtk-impact-vote"><span class="gtk-card-label">PILKETOS</span><strong>{{ $gtk['votes'] }}<span>suara digital</span></strong><p>Selesai dalam satu hari.<br>Hasil diketahui langsung.</p><button class="gtk-inline-link gtk-js-only" data-evidence-target="pilketos" type="button">Lihat bukti <span>↗</span></button></article></div>
+@if($documentation)@include('gtk2026.slide-gallery')@endif

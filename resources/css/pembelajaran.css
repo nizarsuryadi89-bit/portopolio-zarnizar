@@ -1,0 +1,480 @@
+/* ==========================================================================
+   Zarnizar Learning - Microsite Pembelajaran Informatika Kelas XII
+   Materi: Membaca dan Memahami Kode Python
+   Isolated Styling (Scoped to .zl-body / .zl-app)
+   ========================================================================== */
+
+:root {
+    --zl-primary: #1e3a8a;
+    --zl-primary-light: #3b82f6;
+    --zl-primary-dark: #172554;
+    --zl-accent: #f59e0b;
+    --zl-accent-hover: #d97706;
+    --zl-success: #10b981;
+    --zl-success-light: #d1fae5;
+    --zl-danger: #ef4444;
+    --zl-danger-light: #fee2e2;
+    --zl-warning: #f59e0b;
+    --zl-warning-light: #fef3c7;
+    --zl-bg: #f8fafc;
+    --zl-card-bg: #ffffff;
+    --zl-text: #0f172a;
+    --zl-text-muted: #64748b;
+    --zl-border: #0f172a;
+    --zl-code-bg: #0f172a;
+    --zl-code-text: #e2e8f0;
+    --zl-font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --zl-font-mono: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace;
+}
+
+/* Base App Wrapper */
+.zl-app {
+    font-family: var(--zl-font-sans);
+    color: var(--zl-text);
+    background-color: var(--zl-bg);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Brutalist utility borders and shadows matching zarnizar.com style */
+.zl-card {
+    background: var(--zl-card-bg);
+    border: 2px solid var(--zl-border);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0px 0px rgba(15, 23, 42, 1);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.zl-card-hover:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px 0px rgba(15, 23, 42, 1);
+}
+
+.zl-card-sm {
+    border: 2px solid var(--zl-border);
+    border-radius: 8px;
+    box-shadow: 3px 3px 0px 0px rgba(15, 23, 42, 1);
+}
+
+.zl-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    padding: 0.65rem 1.25rem;
+    border-radius: 8px;
+    border: 2px solid var(--zl-border);
+    box-shadow: 3px 3px 0px 0px rgba(15, 23, 42, 1);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.15s ease;
+}
+
+.zl-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0px 0px rgba(15, 23, 42, 1);
+    text-decoration: none;
+}
+
+.zl-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px 0px rgba(15, 23, 42, 1);
+}
+
+.zl-btn-primary {
+    background-color: var(--zl-primary);
+    color: #ffffff !important;
+}
+.zl-btn-primary:hover {
+    background-color: var(--zl-primary-light);
+    color: #ffffff !important;
+}
+
+.zl-btn-accent {
+    background-color: var(--zl-accent);
+    color: #0f172a !important;
+}
+.zl-btn-accent:hover {
+    background-color: var(--zl-accent-hover);
+    color: #0f172a !important;
+}
+
+.zl-btn-success {
+    background-color: var(--zl-success);
+    color: #ffffff !important;
+}
+
+.zl-btn-outline {
+    background-color: #ffffff;
+    color: var(--zl-text) !important;
+}
+.zl-btn-outline:hover {
+    background-color: #f1f5f9;
+}
+
+/* Badge styles */
+.zl-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+    border: 1.5px solid var(--zl-border);
+}
+
+.zl-badge-primary { background: #dbeafe; color: #1e40af; }
+.zl-badge-success { background: #d1fae5; color: #065f46; }
+.zl-badge-warning { background: #fef3c7; color: #92400e; }
+.zl-badge-danger  { background: #fee2e2; color: #991b1b; }
+.zl-badge-dark    { background: #0f172a; color: #f8fafc; }
+
+/* Header / Navbar */
+.zl-navbar {
+    background-color: #ffffff;
+    border-bottom: 2px solid var(--zl-border);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+/* Code Viewer Widget */
+.zl-code-block {
+    background-color: var(--zl-code-bg);
+    color: var(--zl-code-text);
+    border-radius: 10px;
+    border: 2px solid var(--zl-border);
+    box-shadow: 4px 4px 0px 0px rgba(15, 23, 42, 1);
+    overflow: hidden;
+    font-family: var(--zl-font-mono);
+    font-size: 0.925rem;
+}
+
+.zl-code-header {
+    background-color: #1e293b;
+    border-bottom: 1px solid #334155;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.zl-code-dots {
+    display: flex;
+    gap: 6px;
+}
+.zl-code-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+.zl-dot-red { background: #ef4444; }
+.zl-dot-yellow { background: #f59e0b; }
+.zl-dot-green { background: #10b981; }
+
+.zl-code-content {
+    padding: 1rem 0;
+    overflow-x: auto;
+    margin: 0;
+}
+
+.zl-code-line {
+    display: flex;
+    padding: 0.2rem 1rem;
+    transition: background 0.15s ease;
+    line-height: 1.6;
+}
+
+.zl-code-line:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.zl-code-line.zl-active-line {
+    background-color: rgba(59, 130, 246, 0.28) !important;
+    border-left: 4px solid #3b82f6;
+    padding-left: calc(1rem - 4px);
+}
+
+.zl-line-number {
+    width: 2.25rem;
+    user-select: none;
+    color: #64748b;
+    text-align: right;
+    margin-right: 1.25rem;
+    font-weight: 500;
+}
+
+.zl-line-text {
+    flex: 1;
+    white-space: pre;
+}
+
+/* Python Syntax Highlighting Classes */
+.zl-py-keyword { color: #f43f5e; font-weight: 600; }     /* if, elif, else, for, in, while, def */
+.zl-py-builtin { color: #38bdf8; font-weight: 600; }     /* print, len, range, str, int */
+.zl-py-string  { color: #34d399; }                       /* "text", 'halo' */
+.zl-py-number  { color: #fbbf24; }                       /* 85, 0, 3.14 */
+.zl-py-operator{ color: #e879f9; }                       /* =, +, -, ==, >= */
+.zl-py-comment { color: #94a3b8; font-style: italic; }   /* # komentar */
+.zl-py-var     { color: #f8fafc; }                       /* nama variabel */
+
+/* Playground Editor */
+.zl-playground-editor {
+    font-family: var(--zl-font-mono) !important;
+    font-size: 0.95rem;
+    tab-size: 4;
+    resize: vertical;
+    outline: none !important;
+}
+
+.zl-playground-editor:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Interactive Code Tracer Widget */
+.zl-tracer-container {
+    background: #ffffff;
+    border: 2px solid var(--zl-border);
+    border-radius: 12px;
+    box-shadow: 4px 4px 0px 0px rgba(15, 23, 42, 1);
+    overflow: hidden;
+}
+
+.zl-tracer-header {
+    background: #f1f5f9;
+    border-bottom: 2px solid var(--zl-border);
+    padding: 0.85rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.zl-tracer-body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 1.25rem;
+}
+@media (min-width: 992px) {
+    .zl-tracer-body {
+        grid-template-columns: 1.15fr 0.85fr;
+    }
+}
+
+.zl-memory-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 2px solid var(--zl-border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 0.9rem;
+}
+
+.zl-memory-table th {
+    background-color: #e2e8f0;
+    border-bottom: 2px solid var(--zl-border);
+    padding: 0.6rem 0.85rem;
+    font-weight: 700;
+    color: var(--zl-text);
+    text-align: left;
+}
+
+.zl-memory-table td {
+    padding: 0.6rem 0.85rem;
+    border-bottom: 1px solid #e2e8f0;
+    font-family: var(--zl-font-mono);
+}
+
+.zl-memory-table tr:last-child td {
+    border-bottom: none;
+}
+
+.zl-memory-table .zl-var-changed {
+    background-color: #fef3c7 !important;
+    animation: zlPulseHighlight 1s ease;
+}
+
+@keyframes zlPulseHighlight {
+    0% { background-color: #fde047; }
+    100% { background-color: #fef3c7; }
+}
+
+.zl-terminal-screen {
+    background-color: #020617;
+    color: #22c55e;
+    font-family: var(--zl-font-mono);
+    border-radius: 8px;
+    border: 2px solid var(--zl-border);
+    padding: 1rem;
+    min-height: 110px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.zl-terminal-screen .zl-term-line {
+    line-height: 1.5;
+}
+
+/* Quiz Option Card */
+.zl-quiz-card {
+    background: #ffffff;
+    border: 2px solid var(--zl-border);
+    border-radius: 10px;
+    box-shadow: 3px 3px 0px 0px rgba(15, 23, 42, 1);
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+.zl-option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-bottom: 0.5rem;
+    background: #ffffff;
+}
+
+.zl-option-label:hover {
+    border-color: var(--zl-primary);
+    background-color: #f8fafc;
+}
+
+.zl-option-label input[type="radio"] {
+    margin-top: 0.2rem;
+    accent-color: var(--zl-primary);
+}
+
+.zl-option-label.zl-selected {
+    border-color: var(--zl-primary);
+    background-color: #eff6ff;
+    font-weight: 500;
+}
+
+.zl-option-label.zl-correct {
+    border-color: #10b981 !important;
+    background-color: #ecfdf5 !important;
+    color: #065f46;
+}
+
+.zl-option-label.zl-incorrect {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2 !important;
+    color: #991b1b;
+}
+
+.zl-explanation-box {
+    border-radius: 8px;
+    border: 2px solid #cbd5e1;
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 0.925rem;
+    line-height: 1.5;
+}
+
+.zl-explanation-box.zl-box-correct {
+    border-color: #10b981;
+    background-color: #f0fdf4;
+}
+
+.zl-explanation-box.zl-box-incorrect {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+}
+
+/* Question Palette for Assessment */
+.zl-palette-btn {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 6px;
+    border: 1.5px solid var(--zl-border);
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: #ffffff;
+    transition: all 0.1s ease;
+}
+
+.zl-palette-btn.zl-palette-answered {
+    background: var(--zl-primary);
+    color: #ffffff;
+}
+
+.zl-palette-btn.zl-palette-active {
+    outline: 3px solid var(--zl-accent);
+}
+
+/* Print Certificate / Result Sheet Styles */
+@media print {
+    body, html {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-size: 11pt !important;
+    }
+
+    .zl-no-print,
+    .zl-navbar,
+    .zl-footer,
+    .zl-btn,
+    .zl-palette-container,
+    .zl-storage-notice {
+        display: none !important;
+    }
+
+    .zl-card,
+    .zl-card-sm,
+    .zl-quiz-card,
+    .zl-code-block {
+        box-shadow: none !important;
+        border: 1px solid #333333 !important;
+        page-break-inside: avoid;
+    }
+
+    .zl-print-header {
+        display: block !important;
+        border-bottom: 2px solid #000;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+    }
+
+    .zl-print-header h1 {
+        font-size: 18pt !important;
+        margin: 0;
+    }
+
+    .zl-code-block {
+        background-color: #f8fafc !important;
+        color: #0f172a !important;
+    }
+    
+    .zl-code-line {
+        color: #0f172a !important;
+    }
+
+    .zl-line-text {
+        color: #0f172a !important;
+    }
+
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}
+

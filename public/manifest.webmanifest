@@ -1,0 +1,17 @@
+{
+  "id": "./admin",
+  "name": "Portfolio CMS",
+  "short_name": "Portfolio",
+  "description": "Kelola portfolio, artikel, profil, dan kegiatan Anda.",
+  "lang": "id",
+  "start_url": "./admin/dashboard",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f2f4f8",
+  "theme_color": "#1e3a8a",
+  "icons": [
+    { "src": "./pwa-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./pwa-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "./pwa-icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
