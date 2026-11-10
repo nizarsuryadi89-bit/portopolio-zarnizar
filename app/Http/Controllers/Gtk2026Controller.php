@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Vite;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\UploadedFile as SymfonyUploadedFile;
 
 class Gtk2026Controller extends Controller
 {
@@ -74,6 +76,36 @@ class Gtk2026Controller extends Controller
         $item = $items[$evidence] ?? null;
         abort_unless(is_array($item) && ! in_array($item['kind'] ?? null, ['timeline', 'youtube'], true), 404);
 
+        $contentLength = (int) $request->server('CONTENT_LENGTH', 0);
+        if ($contentLength > 0 && empty($request->all()) && empty($request->allFiles())) {
+            $postLimit = ini_get('post_max_size') ?: 'server';
+
+            return back()->withErrors([
+                'files' => 'Ukuran total file melebihi batas server (post_max_size: '.$postLimit.'). Silakan kompres file atau naikkan post_max_size di cPanel/php.ini.',
+            ]);
+        }
+
+        $filesBag = $request->files->get('files') ?? $request->files->get('file');
+        $rawUploadedFiles = is_array($filesBag) ? Arr::flatten($filesBag) : ($filesBag !== null ? [$filesBag] : []);
+
+        foreach ($rawUploadedFiles as $rawFile) {
+            if ($rawFile instanceof SymfonyUploadedFile && ! $rawFile->isValid()) {
+                if ($rawFile->getError() === UPLOAD_ERR_INI_SIZE || $rawFile->getError() === UPLOAD_ERR_FORM_SIZE) {
+                    $limit = ini_get('upload_max_filesize') ?: 'server';
+
+                    return back()->withErrors([
+                        'files' => 'Ukuran file "'.$rawFile->getClientOriginalName().'" melebihi batas upload server (upload_max_filesize: '.$limit.'). Silakan kompres foto atau naikkan upload_max_filesize di cPanel.',
+                    ]);
+                }
+
+                if ($rawFile->getError() === UPLOAD_ERR_PARTIAL) {
+                    return back()->withErrors([
+                        'files' => 'File "'.$rawFile->getClientOriginalName().'" hanya terunggah sebagian (koneksi terputus). Silakan coba lagi.',
+                    ]);
+                }
+            }
+        }
+
         if ($request->hasFile('file') && ! $request->hasFile('files')) {
             $validated = $request->validate([
                 'file' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf,mp4', 'extensions:jpg,jpeg,png,webp,pdf,mp4', 'max:20480'],
@@ -85,6 +117,10 @@ class Gtk2026Controller extends Controller
             ]);
             $files = [$validated['file']];
         } else {
+            if ($request->file('files') instanceof SymfonyUploadedFile) {
+                $request->files->set('files', [$request->file('files')]);
+            }
+
             $validated = $request->validate([
                 'files' => ['required', 'array', 'min:1'],
                 'files.*' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf,mp4', 'extensions:jpg,jpeg,png,webp,pdf,mp4', 'max:20480'],

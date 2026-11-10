@@ -122,6 +122,32 @@ test('authenticated administrators can upload multiple photos simultaneously and
     Storage::disk('local')->assertExists('gtk2026/evidence/admin-upload-source-3.webp');
 });
 
+test('evidence upload catches post max size overflow and upload ini size errors', function (): void {
+    $user = User::factory()->create();
+
+    // Test post_max_size overflow (content length header present with empty payload)
+    $this->actingAs($user)
+        ->from(route('gtk2026.evidence'))
+        ->call('POST', route('gtk2026.evidence.upload', 'source'), [], [], [], ['CONTENT_LENGTH' => 104857600])
+        ->assertRedirect(route('gtk2026.evidence'))
+        ->assertSessionHasErrors(['files']);
+
+    // Test UPLOAD_ERR_INI_SIZE
+    $oversizedFile = new UploadedFile(
+        path: tempnam(sys_get_temp_dir(), 'test_'),
+        originalName: 'very-large.jpg',
+        mimeType: 'image/jpeg',
+        error: UPLOAD_ERR_INI_SIZE,
+        test: true
+    );
+
+    $this->actingAs($user)
+        ->from(route('gtk2026.evidence'))
+        ->post(route('gtk2026.evidence.upload', 'source'), ['files' => [$oversizedFile]])
+        ->assertRedirect(route('gtk2026.evidence'))
+        ->assertSessionHasErrors(['files']);
+});
+
 test('closing slide displays tangible evidence links to presentation, school website, and siaga', function (): void {
     $this->get(route('gtk2026'))
         ->assertSee('https://zarnizar.com/gtk2026#slide-1', false)
