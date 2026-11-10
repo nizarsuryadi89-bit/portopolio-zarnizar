@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <x-marketing-head 
-        :title="'Profil & Rekam Jejak — ' . ($profile->name ?? 'Nizar Suryadi, S.T.') . ' | Zarnizar'" 
-        :description="'Profil lengkap, keahlian teknis (tech stack), riwayat pengalaman mengajar & rekayasa perangkat lunak, serta karya inovasi digital oleh Nizar Suryadi, S.T. (Guru Informatika SMAN 4 Tasikmalaya).'" 
+        :title="'Curriculum Vitae (CV) & Profil Rekam Jejak — ' . ($profile->name ?? 'Nizar Suryadi, S.T.') . ' | Zarnizar'" 
+        :description="'Curriculum Vitae (CV), profil lengkap, keahlian teknis (tech stack), riwayat pengalaman mengajar & rekayasa perangkat lunak, serta karya inovasi digital oleh Nizar Suryadi, S.T. (Guru Informatika SMAN 4 Tasikmalaya).'" 
         :canonical="url()->current()" 
         :settings="$settings" 
     />
@@ -76,6 +76,83 @@
         .font-mono {
             font-family: 'JetBrains Mono', monospace !important;
         }
+
+        /* Print Styles for Curriculum Vitae (CV) */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 10mm 12mm;
+            }
+
+            *, *:before, *:after {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            html, body {
+                background: #ffffff !important;
+                background-image: none !important;
+                color: #000000 !important;
+                font-size: 10pt !important;
+                line-height: 1.4 !important;
+            }
+
+            .no-print,
+            .sales-nav,
+            .sales-skip-link,
+            .sales-contact,
+            footer {
+                display: none !important;
+            }
+
+            .print-only {
+                display: block !important;
+            }
+
+            .brutal-shadow,
+            .brutal-shadow-sm,
+            .brutal-shadow-hover {
+                box-shadow: none !important;
+                transform: none !important;
+            }
+
+            .brutal-border {
+                border-width: 1px !important;
+                border-color: #000000 !important;
+            }
+
+            .print-break-inside-avoid {
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+            }
+
+            header {
+                padding-top: 0 !important;
+                padding-bottom: 1rem !important;
+                border-bottom: 1.5px solid #000000 !important;
+            }
+
+            section {
+                padding-top: 1.25rem !important;
+                padding-bottom: 1.25rem !important;
+                border-bottom: 1.5px solid #000000 !important;
+                background: #ffffff !important;
+            }
+
+            #about, #skills, #experience, #education, #portofolio-karya {
+                background: #ffffff !important;
+            }
+
+            a {
+                text-decoration: none !important;
+                color: #000000 !important;
+            }
+
+            p, h1, h2, h3, h4, span, div {
+                orphans: 3;
+                widows: 3;
+            }
+        }
     </style>
 </head>
 
@@ -86,20 +163,46 @@
 
     <main id="main-content">
 
+        <!-- Print-Only Formal CV Header -->
+        <div class="hidden print-only mb-6 pb-4 border-b-2 border-black">
+            <div class="flex justify-between items-start">
+                <div>
+                    <span class="inline-block border border-black px-2 py-0.5 text-[9px] font-black uppercase tracking-widest bg-gray-100 mb-1">
+                        CURRICULUM VITAE (CV)
+                    </span>
+                    <h1 class="text-2xl font-black uppercase tracking-tight text-black">
+                        {{ $profile->name ?? 'Nizar Suryadi, S.T.' }}
+                    </h1>
+                    <p class="text-xs font-bold text-gray-800 uppercase tracking-wider mt-0.5">
+                        Guru Informatika SMAN 4 Tasikmalaya · Software Engineer · Pengembang Ekosistem Digital Pendidikan
+                    </p>
+                </div>
+                <div class="text-right text-[11px] text-gray-700 leading-tight">
+                    <div><strong>Domisili:</strong> {{ $profile->location ?? 'Kota Tasikmalaya' }}</div>
+                    <div><strong>Email:</strong> {{ $profile->email ?? 'nizarsuryadi89@gmail.com' }}</div>
+                    <div><strong>WhatsApp:</strong> +62 899-9770-477</div>
+                    <div><strong>Portofolio:</strong> zarnizar.com</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Breadcrumb & Top Header -->
         <header class="py-10 md:py-16 border-b-[3px] border-black bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <!-- Breadcrumb -->
-                <div class="mb-6">
+                <div class="mb-6 flex flex-wrap items-center justify-between gap-3 no-print">
                     <a href="{{ route('site.home') }}" class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-black bg-[#f4f4f0] px-3.5 py-2 brutal-border brutal-shadow-hover transition">
                         <i class="bi bi-arrow-left"></i> Kembali ke Beranda
                     </a>
+                    <span class="text-xs font-bold uppercase tracking-wider text-gray-500 bg-[#f4f4f0] px-3 py-1.5 brutal-border">
+                        <i class="bi bi-file-earmark-person me-1"></i> Mode Curriculum Vitae (CV) &amp; Portofolio
+                    </span>
                 </div>
 
                 <div class="max-w-4xl">
                     <div class="inline-flex items-center gap-2 bg-navy-blue text-white text-xs font-bold px-3 py-1 brutal-border uppercase tracking-widest mb-4">
-                        <i class="bi bi-person-badge"></i> PROFIL &amp; REKAM JEJAK
+                        <i class="bi bi-person-badge"></i> CURRICULUM VITAE &amp; REKAM JEJAK
                     </div>
                     <h1 class="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-black leading-tight mb-4">
                         {{ $profile->name ?? 'Nizar Suryadi, S.T.' }}
@@ -108,10 +211,14 @@
                         Guru Informatika SMA Negeri 4 Tasikmalaya · Praktisi Rekayasa Perangkat Lunak · Pengembang Ekosistem Digital Pendidikan (SASTI &amp; Zarnizar Learning) · Peserta Apresiasi GTK 2026 Kategori Dedikatif.
                     </p>
 
-                    <div class="flex flex-wrap items-center gap-3">
+                    <div class="flex flex-wrap items-center gap-3 no-print">
+                        <button type="button" onclick="window.print()" class="bg-black text-white px-5 py-3 font-bold uppercase tracking-wider text-xs brutal-border hover:bg-navy-blue transition inline-flex items-center gap-2 brutal-shadow-hover cursor-pointer">
+                            <i class="bi bi-printer-fill"></i> Cetak CV / Simpan PDF
+                        </button>
+
                         @if($profile && $profile->cv_file)
-                            <a href="{{ Storage::url($profile->cv_file) }}" target="_blank" rel="noopener noreferrer" class="bg-black text-white px-5 py-3 font-bold uppercase tracking-wider text-xs brutal-border hover:bg-navy-blue transition inline-flex items-center gap-2 brutal-shadow-hover">
-                                <i class="bi bi-file-earmark-pdf"></i> Unduh CV (PDF)
+                            <a href="{{ Storage::url($profile->cv_file) }}" target="_blank" rel="noopener noreferrer" class="bg-white text-black px-5 py-3 font-bold uppercase tracking-wider text-xs brutal-border hover:bg-navy-blue hover:text-white transition inline-flex items-center gap-2 brutal-shadow-hover">
+                                <i class="bi bi-file-earmark-pdf"></i> Unduh File CV
                             </a>
                         @endif
 
@@ -127,6 +234,10 @@
                             @endforeach
                         </div>
                     </div>
+
+                    <p class="text-xs text-gray-500 font-medium mt-4 no-print flex items-center gap-1.5">
+                        <i class="bi bi-info-circle text-navy-blue"></i> Tips: Klik <strong>"Cetak CV / Simpan PDF"</strong> untuk mencetak langsung atau menyimpannya sebagai file PDF Curriculum Vitae standar A4 siap pakai.
+                    </p>
                 </div>
 
             </div>
@@ -138,9 +249,11 @@
                 
                 <!-- About Column -->
                 <div id="about" class="md:w-1/2 p-8 md:p-16 border-b-[3px] md:border-b-0 md:border-r-[3px] border-black bg-white">
-                    <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-4">
+                    <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-2">
                         <span class="bg-black text-white px-2">01</span> PROFIL GURU &amp; DEVELOPER
                     </h2>
+                    <span class="text-xs font-bold uppercase tracking-wider text-gray-500 block mb-4">RINGKASAN EKSEKUTIF / EXECUTIVE SUMMARY</span>
+                    
                     <div class="inline-block bg-navy-blue text-white text-xs font-bold px-3 py-1 brutal-border uppercase mb-6 tracking-wider">
                         Guru Informatika SMAN 4 Tasikmalaya · Peserta GTK 2026 Dedikatif
                     </div>
@@ -151,32 +264,41 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         @if($profile && $profile->location)
-                            <div class="bg-[#f4f4f0] brutal-border p-4">
-                                <div class="text-xs font-bold uppercase text-gray-500 mb-1">LOCATION</div>
+                            <div class="bg-[#f4f4f0] brutal-border p-4 print-break-inside-avoid">
+                                <div class="text-xs font-bold uppercase text-gray-500 mb-1">LOCATION / DOMISILI</div>
                                 <div class="font-bold text-black">{{ $profile->location }}</div>
                             </div>
                         @endif
                         @if($profile && $profile->email)
-                            <div class="bg-[#f4f4f0] brutal-border p-4">
-                                <div class="text-xs font-bold uppercase text-gray-500 mb-1">EMAIL</div>
+                            <div class="bg-[#f4f4f0] brutal-border p-4 print-break-inside-avoid">
+                                <div class="text-xs font-bold uppercase text-gray-500 mb-1">EMAIL RESMI</div>
                                 <div class="font-bold truncate text-black">{{ $profile->email }}</div>
                             </div>
                         @endif
+                        <div class="bg-[#f4f4f0] brutal-border p-4 print-break-inside-avoid">
+                            <div class="text-xs font-bold uppercase text-gray-500 mb-1">WHATSAPP / TELEPON</div>
+                            <div class="font-bold text-black">+62 899-9770-477</div>
+                        </div>
+                        <div class="bg-[#f4f4f0] brutal-border p-4 print-break-inside-avoid">
+                            <div class="text-xs font-bold uppercase text-gray-500 mb-1">WEBSITE &amp; PORTOFOLIO</div>
+                            <div class="font-bold text-black">zarnizar.com</div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Tech Stack Column -->
                 <div id="skills" class="md:w-1/2 p-8 md:p-16 bg-[#f4f4f0]">
-                    <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-8">
+                    <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tighter mb-2">
                         <span class="bg-navy-blue text-white px-2 brutal-border">02</span> TECH STACK
                     </h2>
+                    <span class="text-xs font-bold uppercase tracking-wider text-gray-500 block mb-8">KOMPETENSI TEKNIS &amp; PENGEMBANGAN SISTEM</span>
 
                     @if($skills->isEmpty())
                         <div class="bg-white brutal-border p-8 text-center font-bold">NO MODULES LOADED.</div>
                     @else
                         <div class="flex flex-wrap gap-4">
                             @foreach($skills as $skill)
-                                <div class="bg-white brutal-border brutal-shadow-hover p-4 flex flex-col justify-between" style="width: calc(50% - 8px); min-width: 140px;">
+                                <div class="bg-white brutal-border brutal-shadow-hover p-4 flex flex-col justify-between print-break-inside-avoid" style="width: calc(50% - 8px); min-width: 140px;">
                                     <div class="flex justify-between items-start mb-4">
                                         @if($skill->icon)
                                             <i class="{{ $skill->icon }} text-3xl text-black"></i>
@@ -205,9 +327,10 @@
         <!-- Section 03: Experience & Education -->
         <section class="py-16 md:py-24 border-b-[3px] border-black bg-white" id="experience">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-12 text-center">
+                <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-2 text-center">
                     <span class="bg-navy-blue text-white px-2 brutal-border">03</span> SYSTEM LOGS (EXP)
                 </h2>
+                <span class="text-xs font-bold uppercase tracking-wider text-gray-500 block text-center mb-12">RIWAYAT PENGALAMAN PROFESIONAL &amp; DATA PENDIDIKAN</span>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
                     <!-- Experience -->
@@ -216,7 +339,7 @@
                             <i class="bi bi-briefcase-fill text-navy-blue"></i> WORK_HISTORY
                         </h3>
                         @forelse($experiences as $exp)
-                            <div class="mb-8 relative pl-6 border-l-[3px] border-black">
+                            <div class="mb-8 relative pl-6 border-l-[3px] border-black print-break-inside-avoid">
                                 <div class="absolute w-4 h-4 bg-navy-blue brutal-border -left-[10px] top-1"></div>
                                 <div class="text-xs font-bold uppercase bg-black text-white inline-block px-2 py-1 mb-2">
                                     {{ \Carbon\Carbon::parse($exp->start_date)->format('M Y') }} -
@@ -239,7 +362,7 @@
                             <i class="bi bi-mortarboard-fill text-navy-blue"></i> TRAINING_DATA
                         </h3>
                         @forelse($educations as $edu)
-                            <div class="mb-8 bg-[#f4f4f0] brutal-border p-6 brutal-shadow">
+                            <div class="mb-8 bg-[#f4f4f0] brutal-border p-6 brutal-shadow print-break-inside-avoid">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="text-xl font-bold uppercase w-3/4 text-black">{{ $edu->institution }}</h4>
                                     <span class="bg-black text-white text-xs font-bold px-2 py-1 brutal-border shrink-0">
@@ -264,7 +387,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center max-w-3xl mx-auto mb-12">
                     <span class="bg-black text-white px-3 py-1 font-bold text-xs uppercase tracking-widest brutal-border mb-3 inline-block">
-                        REKAM JEJAK DIGITAL
+                        REKAM JEJAK DIGITAL &amp; INOVASI
                     </span>
                     <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tighter text-black">
                         Portofolio &amp; Karya Inovasi
@@ -278,7 +401,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                     
                     <!-- Card 1: SASTI -->
-                    <div class="bg-white brutal-border brutal-shadow p-6 flex flex-col justify-between">
+                    <div class="bg-white brutal-border brutal-shadow p-6 flex flex-col justify-between print-break-inside-avoid">
                         <div>
                             <div class="text-xs font-black uppercase bg-navy-blue text-white px-2 py-1 brutal-border inline-block mb-3">
                                 EKOSISTEM SEKOLAH
@@ -288,13 +411,13 @@
                                 Sistem Administrasi &amp; Sarana Terintegrasi SMAN 4 Tasikmalaya. Mengelola digitalisasi persuratan, inventaris, presensi, dan layanan sekolah terpadu.
                             </p>
                         </div>
-                        <a href="{{ route('site.home') }}#portfolio" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase text-navy-blue underline hover:text-black">
+                        <a href="{{ route('site.home') }}#portfolio" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase text-navy-blue underline hover:text-black no-print">
                             Lihat Dokumentasi Proyek &rarr;
                         </a>
                     </div>
 
                     <!-- Card 2: Zarnizar Learning -->
-                    <div class="bg-white brutal-border brutal-shadow p-6 flex flex-col justify-between">
+                    <div class="bg-white brutal-border brutal-shadow p-6 flex flex-col justify-between print-break-inside-avoid">
                         <div>
                             <div class="text-xs font-black uppercase bg-black text-white px-2 py-1 brutal-border inline-block mb-3">
                                 MEDIA PEMBELAJARAN
@@ -304,13 +427,13 @@
                                 Platform interaktif 4 pertemuan (8 JP) untuk siswa memahami eksekusi kode Python dengan Visual Code Tracer dan In-Browser Playground.
                             </p>
                         </div>
-                        <a href="{{ route('pembelajaran.index') }}" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase text-navy-blue underline hover:text-black">
+                        <a href="{{ route('pembelajaran.index') }}" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase text-navy-blue underline hover:text-black no-print">
                             Buka Ruang Belajar &rarr;
                         </a>
                     </div>
 
                     <!-- Card 3: GTK 2026 -->
-                    <div class="bg-white brutal-border brutal-shadow p-6 flex flex-col justify-between">
+                    <div class="bg-white brutal-border brutal-shadow p-6 flex flex-col justify-between print-break-inside-avoid">
                         <div>
                             <div class="text-xs font-black uppercase bg-amber-500 text-black px-2 py-1 brutal-border inline-block mb-3">
                                 PRAKTIK BAIK
@@ -320,7 +443,7 @@
                                 Karya inovasi dan pengabdian guru Informatika dalam transformasi digital sekolah berjudul <em>"Dari Kebutuhan Menjadi Pengabdian"</em>.
                             </p>
                         </div>
-                        <a href="{{ route('gtk2026') }}" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase text-navy-blue underline hover:text-black">
+                        <a href="{{ route('gtk2026') }}" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase text-navy-blue underline hover:text-black no-print">
                             Buka Presentasi Slide &rarr;
                         </a>
                     </div>
@@ -331,7 +454,7 @@
                 @if(isset($portfolios) && $portfolios->count() > 0)
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         @foreach($portfolios as $item)
-                            <article class="bg-white brutal-border brutal-shadow hover:-translate-y-1 hover:shadow-[6px_6px_0px_#000] transition flex flex-col overflow-hidden">
+                            <article class="bg-white brutal-border brutal-shadow hover:-translate-y-1 hover:shadow-[6px_6px_0px_#000] transition flex flex-col overflow-hidden print-break-inside-avoid">
                                 @if($item->image)
                                     <div class="h-48 border-b-[3px] border-black bg-gray-100 overflow-hidden relative">
                                         <x-storage-image :path="$item->image" loading="lazy" alt="{{ $item->title }}" class="w-full h-full object-cover" />
@@ -356,7 +479,7 @@
                                             {{ Str::limit(strip_tags($item->description), 110) }}
                                         </p>
                                     </div>
-                                    <a href="{{ route('portfolio.show', $item->slug) }}" class="inline-flex items-center gap-1 text-xs font-bold uppercase text-navy-blue underline hover:text-black mt-auto">
+                                    <a href="{{ route('portfolio.show', $item->slug) }}" class="inline-flex items-center gap-1 text-xs font-bold uppercase text-navy-blue underline hover:text-black mt-auto no-print">
                                         Detail Karya &rarr;
                                     </a>
                                 </div>
@@ -408,3 +531,4 @@
 
 </body>
 </html>
+

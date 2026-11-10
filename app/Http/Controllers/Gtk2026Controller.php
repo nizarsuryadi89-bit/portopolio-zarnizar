@@ -34,20 +34,36 @@ class Gtk2026Controller extends Controller
             ->header('X-Robots-Tag', 'noindex, nofollow');
     }
 
-    public function media(string $evidence): BinaryFileResponse
+    public function media(Request $request, string $evidence): BinaryFileResponse
     {
         $item = config('gtk2026.evidence.'.$evidence);
         abort_unless(is_array($item) && ($item['public_approved'] ?? false) === true, 404);
-        $item['file'] = $this->uploadedEvidenceFile($evidence) ?? $item['file'];
+
+        $requestedFile = $request->query('file');
+        if ($requestedFile) {
+            $allowedFiles = $this->uploadedEvidenceFiles($evidence);
+            abort_unless(in_array($requestedFile, $allowedFiles, true) || $requestedFile === ($item['file'] ?? null), 404);
+            $item['file'] = $requestedFile;
+        } else {
+            $item['file'] = $this->uploadedEvidenceFile($evidence) ?? $item['file'];
+        }
 
         return $this->evidenceFile($item);
     }
 
-    public function privateMedia(string $evidence): BinaryFileResponse
+    public function privateMedia(Request $request, string $evidence): BinaryFileResponse
     {
         $item = config('gtk2026.evidence.'.$evidence);
         abort_unless(is_array($item), 404);
-        $item['file'] = $this->uploadedEvidenceFile($evidence) ?? $item['file'];
+
+        $requestedFile = $request->query('file');
+        if ($requestedFile) {
+            $allowedFiles = $this->uploadedEvidenceFiles($evidence);
+            abort_unless(in_array($requestedFile, $allowedFiles, true) || $requestedFile === ($item['file'] ?? null), 404);
+            $item['file'] = $requestedFile;
+        } else {
+            $item['file'] = $this->uploadedEvidenceFile($evidence) ?? $item['file'];
+        }
 
         return $this->evidenceFile($item);
     }
@@ -58,38 +74,90 @@ class Gtk2026Controller extends Controller
         $item = $items[$evidence] ?? null;
         abort_unless(is_array($item) && ! in_array($item['kind'] ?? null, ['timeline', 'youtube'], true), 404);
 
-        $validated = $request->validate([
-            'file' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf,mp4', 'extensions:jpg,jpeg,png,webp,pdf,mp4', 'max:20480'],
-        ], [
-            'file.required' => 'Pilih file bukti terlebih dahulu.',
-            'file.mimes' => 'File harus berupa gambar, PDF, atau video MP4.',
-            'file.extensions' => 'Ekstensi file harus JPG, JPEG, PNG, WEBP, PDF, atau MP4.',
-            'file.max' => 'Ukuran file maksimal 20 MB.',
-        ]);
-
-        $file = $validated['file'];
-        $extension = strtolower($file->getClientOriginalExtension());
-        $disk = Storage::disk('local');
-        $storedPath = $file->storeAs(
-            'gtk2026/evidence',
-            'admin-upload-'.$evidence.'.'.$extension,
-            'local',
-        );
-
-        if ($storedPath === false) {
-            throw new RuntimeException('Unable to store the uploaded GTK evidence file.');
+        if ($request->hasFile('file') && ! $request->hasFile('files')) {
+            $validated = $request->validate([
+                'file' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf,mp4', 'extensions:jpg,jpeg,png,webp,pdf,mp4', 'max:20480'],
+            ], [
+                'file.required' => 'Pilih file bukti terlebih dahulu.',
+                'file.mimes' => 'File harus berupa gambar, PDF, atau video MP4.',
+                'file.extensions' => 'Ekstensi file harus JPG, JPEG, PNG, WEBP, PDF, atau MP4.',
+                'file.max' => 'Ukuran file maksimal 20 MB.',
+            ]);
+            $files = [$validated['file']];
+        } else {
+            $validated = $request->validate([
+                'files' => ['required', 'array', 'min:1'],
+                'files.*' => ['required', 'file', 'mimes:jpg,jpeg,png,webp,pdf,mp4', 'extensions:jpg,jpeg,png,webp,pdf,mp4', 'max:20480'],
+            ], [
+                'files.required' => 'Pilih file bukti terlebih dahulu.',
+                'files.min' => 'Pilih minimal satu file bukti.',
+                'files.*.mimes' => 'Setiap file harus berupa gambar, PDF, atau video MP4.',
+                'files.*.extensions' => 'Ekstensi file harus JPG, JPEG, PNG, WEBP, PDF, atau MP4.',
+                'files.*.max' => 'Ukuran setiap file maksimal 20 MB.',
+            ]);
+            $files = $validated['files'];
         }
 
-        foreach (self::EVIDENCE_UPLOAD_EXTENSIONS as $existingExtension) {
-            $existingPath = 'gtk2026/evidence/admin-upload-'.$evidence.'.'.$existingExtension;
+        $disk = Storage::disk('local');
+        $existingFiles = $this->uploadedEvidenceFiles($evidence);
 
-            if ($existingPath !== $storedPath && $disk->exists($existingPath) && ! $disk->delete($existingPath)) {
-                throw new RuntimeException('Unable to replace the previous GTK evidence file.');
+        $maxIndex = 1;
+        foreach ($existingFiles as $ef) {
+            if (preg_match('/^admin-upload-'.preg_quote($evidence, '/').'-([0-9]+)\./i', $ef, $m)) {
+                $maxIndex = max($maxIndex, (int) $m[1]);
+            }
+        }
+
+        $isFirst = empty($existingFiles);
+
+        foreach ($files as $idx => $file) {
+            $extension = strtolower($file->getClientOriginalExtension());
+            if ($isFirst && $idx === 0) {
+                $filename = 'admin-upload-'.$evidence.'.'.$extension;
+                foreach (self::EVIDENCE_UPLOAD_EXTENSIONS as $ext) {
+                    $old = 'gtk2026/evidence/admin-upload-'.$evidence.'.'.$ext;
+                    if ($disk->exists($old) && $old !== 'gtk2026/evidence/'.$filename) {
+                        $disk->delete($old);
+                    }
+                }
+            } else {
+                $maxIndex++;
+                $filename = 'admin-upload-'.$evidence.'-'.$maxIndex.'.'.$extension;
+            }
+
+            $storedPath = $file->storeAs('gtk2026/evidence', $filename, 'local');
+            if ($storedPath === false) {
+                throw new RuntimeException('Unable to store the uploaded GTK evidence file.');
+            }
+        }
+
+        $count = count($files);
+        $message = $count > 1
+            ? "{$count} file bukti \"{$item['title']}\" berhasil diunggah."
+            : "Bukti \"{$item['title']}\" berhasil diunggah.";
+
+        return redirect()->route('gtk2026.evidence')
+            ->with('status', $message);
+    }
+
+    public function deleteEvidence(Request $request, string $evidence): RedirectResponse
+    {
+        $items = config('gtk2026.evidence', []);
+        $item = $items[$evidence] ?? null;
+        abort_unless(is_array($item), 404);
+
+        $disk = Storage::disk('local');
+        $fileToDelete = $request->input('file');
+
+        if ($fileToDelete) {
+            $allowedFiles = $this->uploadedEvidenceFiles($evidence);
+            if (in_array($fileToDelete, $allowedFiles, true)) {
+                $disk->delete('gtk2026/evidence/'.$fileToDelete);
             }
         }
 
         return redirect()->route('gtk2026.evidence')
-            ->with('status', 'Bukti "'.$item['title'].'" berhasil diunggah.');
+            ->with('status', 'File bukti berhasil dihapus.');
     }
 
     public function worker(): Response
@@ -118,16 +186,54 @@ class Gtk2026Controller extends Controller
         $evidence = [];
 
         foreach ($gtk['evidence'] as $id => $item) {
-            $file = $this->uploadedEvidenceFile($id) ?? $item['file'];
-            $path = $this->resolveEvidenceFile($file);
-            $available = $path !== null && ($private || ($item['public_approved'] ?? false) === true);
+            $uploadedFiles = $this->uploadedEvidenceFiles($id);
+            $filesList = [];
+
+            if (! empty($uploadedFiles)) {
+                foreach ($uploadedFiles as $uFile) {
+                    $uPath = $this->resolveEvidenceFile($uFile);
+                    if ($uPath !== null) {
+                        $filesList[] = [
+                            'file' => $uFile,
+                            'path' => $uPath,
+                            'type' => mime_content_type($uPath),
+                            'url' => route($private ? 'gtk2026.evidence.media' : 'gtk2026.media', [
+                                'evidence' => $id,
+                                'file' => $uFile,
+                            ]),
+                            'is_uploaded' => true,
+                        ];
+                    }
+                }
+            } elseif (! empty($item['file'])) {
+                $cPath = $this->resolveEvidenceFile($item['file']);
+                if ($cPath !== null) {
+                    $filesList[] = [
+                        'file' => $item['file'],
+                        'path' => $cPath,
+                        'type' => mime_content_type($cPath),
+                        'url' => route($private ? 'gtk2026.evidence.media' : 'gtk2026.media', $id),
+                        'is_uploaded' => false,
+                    ];
+                }
+            }
+
+            $primaryFile = $filesList[0] ?? null;
+            $primaryUrl = $primaryFile !== null ? route($private ? 'gtk2026.evidence.media' : 'gtk2026.media', $id) : null;
+            if ($primaryFile !== null) {
+                $filesList[0]['url'] = $primaryUrl;
+            }
+
+            $available = $primaryFile !== null && ($private || ($item['public_approved'] ?? false) === true);
             $videos = $this->youtubeVideos($item, $private);
+
             $evidence[$id] = [
                 'title' => $item['title'], 'category' => $item['category'], 'icon' => $item['icon'],
                 'summary' => $item['summary'], 'kind' => $item['kind'] ?? 'media',
                 'available' => $available || $videos !== [],
-                'url' => $available ? route($private ? 'gtk2026.evidence.media' : 'gtk2026.media', $id) : null,
-                'type' => $available ? mime_content_type($path) : null,
+                'url' => $primaryUrl,
+                'type' => $primaryFile['type'] ?? null,
+                'files' => $filesList,
                 'videos' => $videos,
             ];
         }
@@ -227,18 +333,49 @@ class Gtk2026Controller extends Controller
         return in_array(mime_content_type($path), $allowedTypes, true) ? $path : null;
     }
 
-    private function uploadedEvidenceFile(string $evidence): ?string
+    /**
+     * @return array<int, string>
+     */
+    private function uploadedEvidenceFiles(string $evidence): array
     {
         $disk = Storage::disk('local');
+        try {
+            $allFiles = $disk->files('gtk2026/evidence');
+        } catch (\Throwable) {
+            $allFiles = [];
+        }
 
-        foreach (self::EVIDENCE_UPLOAD_EXTENSIONS as $extension) {
-            $file = 'admin-upload-'.$evidence.'.'.$extension;
+        $matched = [];
+        $pattern = '/^admin-upload-'.preg_quote($evidence, '/').'(-[0-9]+)?\.(webp|png|jpe?g|pdf|mp4)$/i';
 
-            if ($disk->exists('gtk2026/evidence/'.$file)) {
-                return $file;
+        foreach ($allFiles as $filePath) {
+            $filename = basename($filePath);
+            if (preg_match($pattern, $filename)) {
+                $matched[] = $filename;
             }
         }
 
-        return null;
+        usort($matched, function (string $a, string $b) use ($evidence): int {
+            $isAPrimary = preg_match('/^admin-upload-'.preg_quote($evidence, '/').'\./i', $a);
+            $isBPrimary = preg_match('/^admin-upload-'.preg_quote($evidence, '/').'\./i', $b);
+
+            if ($isAPrimary && ! $isBPrimary) {
+                return -1;
+            }
+            if (! $isAPrimary && $isBPrimary) {
+                return 1;
+            }
+
+            return strnatcasecmp($a, $b);
+        });
+
+        return $matched;
+    }
+
+    private function uploadedEvidenceFile(string $evidence): ?string
+    {
+        $files = $this->uploadedEvidenceFiles($evidence);
+
+        return $files[0] ?? null;
     }
 }

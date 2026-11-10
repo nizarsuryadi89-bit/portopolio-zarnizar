@@ -112,7 +112,9 @@ test('public profile page renders with teacher bio, skills, and system logs', fu
         ->assertOk()
         ->assertSee('PROFIL GURU &amp; DEVELOPER', false)
         ->assertSee('TECH STACK')
-        ->assertSee('SYSTEM LOGS (EXP)');
+        ->assertSee('SYSTEM LOGS (EXP)')
+        ->assertSee('CURRICULUM VITAE')
+        ->assertSee('Cetak CV / Simpan PDF');
 
     $this->get('/tentang')
         ->assertRedirect(route('profil'));

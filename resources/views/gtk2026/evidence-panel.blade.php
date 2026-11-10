@@ -9,7 +9,18 @@
         @endif
         @if($item['available'])
             @if($item['kind'] === 'youtube')@include('gtk2026.testimonial-links')
-            @elseif(Str::startsWith($item['type'], 'image/'))<a href="{{ $item['url'] }}" target="_blank" rel="noopener" aria-label="Buka gambar {{ $item['title'] }} dalam ukuran penuh"><img data-src="{{ $item['url'] }}" alt="Dokumentasi {{ $item['title'] }}" loading="lazy" decoding="async"></a>
+            @elseif(Str::startsWith($item['type'], 'image/'))
+                @if(count($item['files'] ?? []) > 1)
+                    <div class="gtk-evidence-dialog-gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-top: 10px;">
+                        @foreach($item['files'] as $f)
+                            <a href="{{ $f['url'] }}" target="_blank" rel="noopener" aria-label="Buka gambar {{ $item['title'] }} dalam ukuran penuh">
+                                <img data-src="{{ $f['url'] }}" src="{{ $f['url'] }}" alt="Dokumentasi {{ $item['title'] }}" loading="lazy" decoding="async" style="width: 100%; height: 130px; object-fit: cover; border-radius: 4px; display: block;">
+                            </a>
+                        @endforeach
+                    </div>
+                @else
+                    <a href="{{ $item['url'] }}" target="_blank" rel="noopener" aria-label="Buka gambar {{ $item['title'] }} dalam ukuran penuh"><img data-src="{{ $item['url'] }}" alt="Dokumentasi {{ $item['title'] }}" loading="lazy" decoding="async"></a>
+                @endif
             @elseif($item['type'] === 'video/mp4')<video controls preload="none" data-video-src="{{ $item['url'] }}" aria-label="Video {{ $item['title'] }}"></video>
             @else<a class="gtk-button gtk-primary" href="{{ $item['url'] }}" target="_blank" rel="noopener">Buka dokumen PDF <x-gtk-icon name="arrow-right" /></a>@endif
         @elseif($item['kind'] !== 'timeline')<div class="gtk-evidence-empty"><x-gtk-icon :name="$item['icon']" /><strong>Belum tersedia</strong><p>Dokumentasi belum dilampirkan untuk tampilan ini.</p></div>@endif

@@ -120,7 +120,30 @@
                                 </div>
                                 @break
                             @case('closing')
-                                <div class="gtk-closing-grid"><div><blockquote class="gtk-closing-quote">“{{ $slide['quote'] }}”</blockquote><p class="gtk-intro">{{ $slide['text'] }}</p><p class="gtk-closing-highlight">{{ $slide['highlight'] }}</p><p class="gtk-final-word">“{{ $slide['closing'] }}”</p><div class="gtk-signature"><strong>{{ $gtk['presenter']['name'] }}</strong><span>{{ $gtk['presenter']['school'] }}</span></div></div><div class="gtk-closing-visual">@if($gtk['assets']['school'])<img src="{{ $gtk['assets']['school'] }}" alt="Nizar Suryadi di lingkungan SMA Negeri 4 Tasikmalaya">@elseif($gtk['assets']['profile'])<img class="gtk-closing-portrait" src="{{ $gtk['assets']['profile'] }}" alt="Potret Nizar Suryadi" width="512" height="768"><span>UNTUK SEKOLAH. UNTUK PENDIDIKAN.</span>@else<span class="gtk-closing-mark">Terus<br><em>bermanfaat.</em></span><span>UNTUK SEKOLAH. UNTUK PENDIDIKAN.</span>@endif</div></div>
+                                <div class="gtk-closing-grid"><div><blockquote class="gtk-closing-quote">“{{ $slide['quote'] }}”</blockquote><p class="gtk-intro">{{ $slide['text'] }}</p><p class="gtk-closing-highlight">{{ $slide['highlight'] }}</p><p class="gtk-final-word">“{{ $slide['closing'] }}”</p><div class="gtk-signature"><strong>{{ $gtk['presenter']['name'] }}</strong><span>{{ $gtk['presenter']['school'] }}</span></div>
+                                <div class="gtk-closing-evidence-links" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px dashed var(--gtk-line, rgba(255,255,255,0.2));">
+                                    <span style="display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gtk-gold, #f59e0b); margin-bottom: 8px;">
+                                        Dokumentasi &amp; Bukti Nyata:
+                                    </span>
+                                    <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: 13px;">
+                                        <li>
+                                            <a href="https://zarnizar.com/gtk2026#slide-1" target="_blank" rel="noopener noreferrer" style="color: #93c5fd; text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; gap: 6px;">
+                                                <x-gtk-icon name="file" /> <strong>zarnizar.com/gtk2026#slide-1</strong> <span style="font-size: 11px; opacity: 0.85;">(Slide Presentasi)</span> ↗
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://sman4-tsm.sch.id/" target="_blank" rel="noopener noreferrer" style="color: #93c5fd; text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; gap: 6px;">
+                                                <x-gtk-icon name="grid" /> <strong>sman4-tsm.sch.id</strong> <span style="font-size: 11px; opacity: 0.85;">(Website SMA Negeri 4 Tasikmalaya)</span> ↗
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://siaga.sman4-tsm.sch.id/" target="_blank" rel="noopener noreferrer" style="color: #93c5fd; text-decoration: underline; text-underline-offset: 3px; display: inline-flex; align-items: center; gap: 6px;">
+                                                <x-gtk-icon name="code" /> <strong>siaga.sman4-tsm.sch.id</strong> <span style="font-size: 11px; opacity: 0.85;">(Sistem SIAGA &amp; SASTI Patas)</span> ↗
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                </div><div class="gtk-closing-visual">@if($gtk['assets']['school'])<img src="{{ $gtk['assets']['school'] }}" alt="Nizar Suryadi di lingkungan SMA Negeri 4 Tasikmalaya">@elseif($gtk['assets']['profile'])<img class="gtk-closing-portrait" src="{{ $gtk['assets']['profile'] }}" alt="Potret Nizar Suryadi" width="512" height="768"><span>UNTUK SEKOLAH. UNTUK PENDIDIKAN.</span>@else<span class="gtk-closing-mark">Terus<br><em>bermanfaat.</em></span><span>UNTUK SEKOLAH. UNTUK PENDIDIKAN.</span>@endif</div></div>
                                 @break
                         @endswitch
                     @endif

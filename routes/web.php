@@ -198,6 +198,7 @@ Route::get('/gtk2026/worker.js', [Gtk2026Controller::class, 'worker'])->name('gt
 Route::get('/gtk2026/media/{evidence}', [Gtk2026Controller::class, 'media'])->where('evidence', '[a-z]+')->name('gtk2026.media');
 Route::get('/gtk2026/evidence', [Gtk2026Controller::class, 'evidence'])->middleware('auth')->name('gtk2026.evidence');
 Route::post('/gtk2026/evidence/{evidence}/media', [Gtk2026Controller::class, 'uploadEvidence'])->where('evidence', '[a-z]+')->middleware('auth')->name('gtk2026.evidence.upload');
+Route::delete('/gtk2026/evidence/{evidence}/media', [Gtk2026Controller::class, 'deleteEvidence'])->where('evidence', '[a-z]+')->middleware('auth')->name('gtk2026.evidence.delete');
 Route::get('/gtk2026/evidence/{evidence}/media', [Gtk2026Controller::class, 'privateMedia'])->where('evidence', '[a-z]+')->middleware('auth')->name('gtk2026.evidence.media');
 Route::get('/jasa-aplikasi', [LandingPageController::class, 'services'])->name('services');
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');

@@ -138,12 +138,17 @@
                         <p class="sales-footnote">Modul Pembelajaran Interaktif · Dokumentasi Karya · Catatan &amp; Artikel
                             Teknologi</p>
                         <div class="flex flex-wrap items-center gap-3 mt-6">
-                            <a href="{{ route('profil') }}" class="sales-text-link">Kenali Profil &amp; Portofolio Pengampu
+                            <a href="{{ route('profil') }}" class="sales-text-link">Kenali Profil, Portofolio &amp; CV
                                 ({{ $profile->name ?? 'Nizar Suryadi, S.T.' }}) →</a>
                             @if($profile && $profile->cv_file)
                                 <a href="{{ Storage::url($profile->cv_file) }}" target="_blank" rel="noopener noreferrer"
                                     class="bg-white text-black font-bold uppercase tracking-widest px-4 py-2 text-[10px] brutal-border brutal-shadow-hover transition inline-flex items-center">
                                     Download CV <i class="bi bi-download ml-1"></i>
+                                </a>
+                            @else
+                                <a href="{{ route('profil') }}"
+                                    class="bg-white text-black font-bold uppercase tracking-widest px-4 py-2 text-[10px] brutal-border brutal-shadow-hover transition inline-flex items-center">
+                                    Lihat &amp; Cetak CV <i class="bi bi-printer-fill ml-1"></i>
                                 </a>
                             @endif
 

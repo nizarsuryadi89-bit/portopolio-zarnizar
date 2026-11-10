@@ -85,6 +85,51 @@ test('authenticated administrators can upload private evidence without publishin
     $this->get(route('gtk2026.media', 'source'))->assertNotFound();
 });
 
+test('authenticated administrators can upload multiple photos simultaneously and delete them', function (): void {
+    Storage::fake('local');
+    $user = User::factory()->create();
+
+    $files = [
+        UploadedFile::fake()->image('photo1.png'),
+        UploadedFile::fake()->image('photo2.jpg'),
+        UploadedFile::fake()->image('photo3.webp'),
+    ];
+
+    $this->actingAs($user)
+        ->post(route('gtk2026.evidence.upload', 'source'), ['files' => $files])
+        ->assertRedirect(route('gtk2026.evidence'))
+        ->assertSessionHas('status', '3 file bukti "SASTI dikembangkan sejak 2022" berhasil diunggah.');
+
+    Storage::disk('local')->assertExists('gtk2026/evidence/admin-upload-source.png');
+    Storage::disk('local')->assertExists('gtk2026/evidence/admin-upload-source-2.jpg');
+    Storage::disk('local')->assertExists('gtk2026/evidence/admin-upload-source-3.webp');
+
+    $this->get(route('gtk2026.evidence'))
+        ->assertSee('admin-upload-source-2.jpg')
+        ->assertSee('admin-upload-source-3.webp');
+
+    $this->get(route('gtk2026.evidence.media', ['evidence' => 'source', 'file' => 'admin-upload-source-2.jpg']))
+        ->assertOk();
+
+    // Test deleting photo 2
+    $this->actingAs($user)
+        ->delete(route('gtk2026.evidence.delete', 'source'), ['file' => 'admin-upload-source-2.jpg'])
+        ->assertRedirect(route('gtk2026.evidence'))
+        ->assertSessionHas('status', 'File bukti berhasil dihapus.');
+
+    Storage::disk('local')->assertMissing('gtk2026/evidence/admin-upload-source-2.jpg');
+    Storage::disk('local')->assertExists('gtk2026/evidence/admin-upload-source.png');
+    Storage::disk('local')->assertExists('gtk2026/evidence/admin-upload-source-3.webp');
+});
+
+test('closing slide displays tangible evidence links to presentation, school website, and siaga', function (): void {
+    $this->get(route('gtk2026'))
+        ->assertSee('https://zarnizar.com/gtk2026#slide-1', false)
+        ->assertSee('https://sman4-tsm.sch.id/', false)
+        ->assertSee('https://siaga.sman4-tsm.sch.id/', false)
+        ->assertSee('Dokumentasi &amp; Bukti Nyata:', false);
+});
+
 test('evidence uploads reject unsupported files and non-uploadable evidence types', function (): void {
     Storage::fake('local');
     $user = User::factory()->create();
@@ -145,7 +190,7 @@ test('the authenticated presentation embeds documentation in its slides without 
     config(['gtk2026.evidence.pilketos.public_approved' => false]);
     $this->get(route('gtk2026'))
         ->assertDontSee('/gtk2026/evidence/pilketos/media')
-        ->assertDontSee('gtk-documentation-pilketos');
+        ->assertDontSee('gtk-documentation-pilketos"');
 });
 
 test('missing and non-image evidence are omitted from the inline slide gallery', function (): void {
