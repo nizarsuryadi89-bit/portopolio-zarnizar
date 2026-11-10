@@ -114,6 +114,10 @@
                 ],
                 shouldNotGroupWhenFull: true
             },
+            link: {
+                addTargetToExternalLinks: true,
+                defaultProtocol: 'https://'
+            },
             image: {
                 toolbar: [
                     'imageStyle:inline',

@@ -19,6 +19,7 @@ use App\Http\Controllers\Gtk2026Controller;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\PembelajaranController;
+use App\Http\Controllers\PostReactionController;
 use App\Http\Controllers\SitemapController;
 use App\Models\Activity;
 use App\Models\Education;
@@ -190,6 +191,8 @@ Route::get('/blog/{slug}', function (string $slug): View {
 
     return view('blog.show', compact('post', 'profile', 'settings', 'socialLinks', 'relatedPosts', 'prevPost', 'nextPost'));
 })->name('blog.show');
+
+Route::post('/blog/{slug}/react', [PostReactionController::class, 'react'])->name('blog.react');
 
 Route::get('/kulapos', [LandingPageController::class, 'kulapos'])->name('kulapos');
 Route::get('/gtk2026', [Gtk2026Controller::class, 'index'])->name('gtk2026');

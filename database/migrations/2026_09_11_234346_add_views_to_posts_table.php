@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->unsignedBigInteger('views')->default(0)->after('published_at');
+            if (! Schema::hasColumn('posts', 'views')) {
+                $table->unsignedBigInteger('views')->default(0)->after('published_at');
+            }
         });
     }
 
@@ -22,7 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->dropColumn('views');
+            if (Schema::hasColumn('posts', 'views')) {
+                $table->dropColumn('views');
+            }
         });
     }
 };

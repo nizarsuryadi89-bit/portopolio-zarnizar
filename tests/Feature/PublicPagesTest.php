@@ -119,3 +119,84 @@ test('public profile page renders with teacher bio, skills, and system logs', fu
     $this->get('/tentang')
         ->assertRedirect(route('profil'));
 });
+
+test('blog content automatically converts plain text URLs into clickable links without modifying existing links', function (): void {
+    $content = '<p>"Bahan presentasi GTK 2026 — Perjalanan SASTI" (https://zarnizar.com/gtk2026)</p>'
+        .'<p>"Website resmi" (https://sman4-tsm.sch.id/)</p>'
+        .'<p>Sudah link: <a href="https://example.com" target="_blank">https://example.com</a></p>'
+        .'<p>Tautan berakhiran titik: https://sman4-tsm.sch.id/.</p>'
+        .'<pre><code>https://code-example.com</code></pre>';
+
+    $post = PostFactory::new()->create([
+        'content' => $content,
+        'is_published' => true,
+    ]);
+
+    $this->get(route('blog.show', $post->slug))
+        ->assertOk()
+        ->assertSee('(<a href="https://zarnizar.com/gtk2026" target="_blank" rel="noopener noreferrer">https://zarnizar.com/gtk2026</a>)', false)
+        ->assertSee('(<a href="https://sman4-tsm.sch.id/" target="_blank" rel="noopener noreferrer">https://sman4-tsm.sch.id/</a>)', false)
+        ->assertSee('href="https://example.com"', false)
+        ->assertSee('<code>https://code-example.com</code>', false);
+});
+
+test('visitors can like, switch reaction, and cancel reaction on blog articles', function (): void {
+    $post = PostFactory::new()->create([
+        'likes' => 0,
+        'dislikes' => 0,
+        'is_published' => true,
+    ]);
+
+    // 1. Like article via JSON API
+    $response = $this->postJson(route('blog.react', $post->slug), ['type' => 'like']);
+    $response->assertOk()
+        ->assertJson([
+            'success' => true,
+            'action' => 'like',
+            'likes' => 1,
+            'dislikes' => 0,
+            'userReaction' => 'like',
+        ]);
+    $this->assertDatabaseHas('posts', ['id' => $post->id, 'likes' => 1, 'dislikes' => 0]);
+
+    // 2. Click like again -> cancels reaction (untoggle)
+    $response2 = $this->postJson(route('blog.react', $post->slug), ['type' => 'like']);
+    $response2->assertOk()
+        ->assertJson([
+            'success' => true,
+            'action' => null,
+            'likes' => 0,
+            'dislikes' => 0,
+            'userReaction' => null,
+        ]);
+    $this->assertDatabaseHas('posts', ['id' => $post->id, 'likes' => 0, 'dislikes' => 0]);
+
+    // 3. Dislike article
+    $response3 = $this->postJson(route('blog.react', $post->slug), ['type' => 'dislike']);
+    $response3->assertOk()
+        ->assertJson([
+            'success' => true,
+            'action' => 'dislike',
+            'likes' => 0,
+            'dislikes' => 1,
+            'userReaction' => 'dislike',
+        ]);
+    $this->assertDatabaseHas('posts', ['id' => $post->id, 'likes' => 0, 'dislikes' => 1]);
+
+    // 4. Switch from dislike to like
+    $response4 = $this->postJson(route('blog.react', $post->slug), ['type' => 'like']);
+    $response4->assertOk()
+        ->assertJson([
+            'success' => true,
+            'action' => 'like',
+            'likes' => 1,
+            'dislikes' => 0,
+            'userReaction' => 'like',
+        ]);
+    $this->assertDatabaseHas('posts', ['id' => $post->id, 'likes' => 1, 'dislikes' => 0]);
+
+    // 5. Normal form post redirects back
+    $this->from(route('blog.show', $post->slug))
+        ->post(route('blog.react', $post->slug), ['type' => 'dislike'])
+        ->assertRedirect(route('blog.show', $post->slug));
+});

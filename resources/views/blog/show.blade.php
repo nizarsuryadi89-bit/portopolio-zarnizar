@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <x-marketing-head 
         :title="$post->title . ' | Zarnizar'" 
@@ -374,6 +375,9 @@
                     <span class="zl-badge bg-light text-dark border border-dark">
                         <i class="bi bi-eye me-1"></i> {{ number_format($post->views) }} views
                     </span>
+                    <span class="zl-badge bg-light text-dark border border-dark">
+                        <i class="bi bi-hand-thumbs-up me-1 text-success"></i> <span id="header-likes-count">{{ number_format($post->likes) }}</span> suka
+                    </span>
                 </div>
 
                 <!-- Main Title -->
@@ -418,7 +422,7 @@
             <!-- Article Body Content Card -->
             <div class="zl-card p-4 p-md-5 bg-white mb-4">
                 <div class="zl-article-content">
-                    {!! $post->content !!}
+                    {!! $post->content_with_auto_links !!}
                 </div>
 
                 <!-- Tags / Topics -->
@@ -430,6 +434,54 @@
                         @endforeach
                     </div>
                 @endif
+            </div>
+
+            <!-- Like & Dislike Reaction Card -->
+            <div class="zl-card p-4 bg-white mb-4 border border-2 border-secondary-subtle">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                    <div>
+                        <div class="small text-uppercase fw-bold text-primary mb-1">
+                            <i class="bi bi-chat-heart me-1"></i> Tanggapan Pembaca
+                        </div>
+                        <h3 class="h5 fw-bold text-dark mb-1">Apakah artikel ini bermanfaat?</h3>
+                        <p class="text-secondary small mb-0">Beri apresiasi atau tanggapan Anda untuk membantu penulis menyajikan catatan yang lebih baik.</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 shrink-0" id="reaction-container">
+                        @php
+                            $userReaction = session()->get('post_reaction_'.$post->id);
+                        @endphp
+                        <form method="POST" action="{{ route('blog.react', $post->slug) }}" class="d-inline reaction-form" data-type="like">
+                            @csrf
+                            <input type="hidden" name="type" value="like">
+                            <button type="submit" 
+                                id="btn-like" 
+                                class="btn {{ $userReaction === 'like' ? 'btn-success text-white shadow-sm' : 'btn-outline-success' }} border-2 d-flex align-items-center gap-2 fw-semibold px-3 py-2"
+                                title="Bermanfaat / Suka artikel ini">
+                                <i class="bi {{ $userReaction === 'like' ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-up' }} fs-5"></i>
+                                <span>Bermanfaat</span>
+                                <span class="badge {{ $userReaction === 'like' ? 'bg-white text-success' : 'bg-success text-white' }} rounded-pill ms-1" id="like-count">
+                                    {{ number_format($post->likes) }}
+                                </span>
+                            </button>
+                        </form>
+
+                        <form method="POST" action="{{ route('blog.react', $post->slug) }}" class="d-inline reaction-form" data-type="dislike">
+                            @csrf
+                            <input type="hidden" name="type" value="dislike">
+                            <button type="submit" 
+                                id="btn-dislike" 
+                                class="btn {{ $userReaction === 'dislike' ? 'btn-danger text-white shadow-sm' : 'btn-outline-secondary' }} border-2 d-flex align-items-center gap-2 fw-semibold px-3 py-2"
+                                title="Kurang bermanfaat">
+                                <i class="bi {{ $userReaction === 'dislike' ? 'bi-hand-thumbs-down-fill' : 'bi-hand-thumbs-down' }} fs-5"></i>
+                                <span>Kurang</span>
+                                <span class="badge {{ $userReaction === 'dislike' ? 'bg-white text-danger' : 'bg-secondary text-white' }} rounded-pill ms-1" id="dislike-count">
+                                    {{ number_format($post->dislikes) }}
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div id="reaction-feedback" class="small text-success fw-semibold mt-2" style="display: none;"></div>
             </div>
 
             <!-- Share & Feedback Card -->
@@ -638,6 +690,92 @@
                 alert('Tautan disalin: ' + window.location.href);
             });
         }
+
+        // Reaction (Like / Dislike) handler
+        document.querySelectorAll('.reaction-form').forEach(function(form) {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                var type = this.getAttribute('data-type');
+                var url = this.getAttribute('action');
+                var token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+                    || this.querySelector('input[name="_token"]')?.value;
+
+                var btnLike = document.getElementById('btn-like');
+                var btnDislike = document.getElementById('btn-dislike');
+                if (btnLike) btnLike.disabled = true;
+                if (btnDislike) btnDislike.disabled = true;
+
+                try {
+                    var response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': token
+                        },
+                        body: JSON.stringify({ type: type })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Response error');
+                    }
+
+                    var data = await response.json();
+                    if (data.success) {
+                        var likeCount = document.getElementById('like-count');
+                        var dislikeCount = document.getElementById('dislike-count');
+                        var headerLike = document.getElementById('header-likes-count');
+
+                        if (likeCount) likeCount.textContent = Number(data.likes).toLocaleString('id-ID');
+                        if (dislikeCount) dislikeCount.textContent = Number(data.dislikes).toLocaleString('id-ID');
+                        if (headerLike) headerLike.textContent = Number(data.likes).toLocaleString('id-ID');
+
+                        var iconLike = btnLike ? btnLike.querySelector('i') : null;
+                        var iconDislike = btnDislike ? btnDislike.querySelector('i') : null;
+
+                        if (data.userReaction === 'like') {
+                            if (btnLike) btnLike.className = 'btn btn-success text-white shadow-sm border-2 d-flex align-items-center gap-2 fw-semibold px-3 py-2';
+                            if (iconLike) iconLike.className = 'bi bi-hand-thumbs-up-fill fs-5';
+                            if (likeCount) likeCount.className = 'badge bg-white text-success rounded-pill ms-1';
+
+                            if (btnDislike) btnDislike.className = 'btn btn-outline-secondary border-2 d-flex align-items-center gap-2 fw-semibold px-3 py-2';
+                            if (iconDislike) iconDislike.className = 'bi bi-hand-thumbs-down fs-5';
+                            if (dislikeCount) dislikeCount.className = 'badge bg-secondary text-white rounded-pill ms-1';
+                        } else if (data.userReaction === 'dislike') {
+                            if (btnDislike) btnDislike.className = 'btn btn-danger text-white shadow-sm border-2 d-flex align-items-center gap-2 fw-semibold px-3 py-2';
+                            if (iconDislike) iconDislike.className = 'bi bi-hand-thumbs-down-fill fs-5';
+                            if (dislikeCount) dislikeCount.className = 'badge bg-white text-danger rounded-pill ms-1';
+
+                            if (btnLike) btnLike.className = 'btn btn-outline-success border-2 d-flex align-items-center gap-2 fw-semibold px-3 py-2';
+                            if (iconLike) iconLike.className = 'bi bi-hand-thumbs-up fs-5';
+                            if (likeCount) likeCount.className = 'badge bg-success text-white rounded-pill ms-1';
+                        } else {
+                            if (btnLike) btnLike.className = 'btn btn-outline-success border-2 d-flex align-items-center gap-2 fw-semibold px-3 py-2';
+                            if (iconLike) iconLike.className = 'bi bi-hand-thumbs-up fs-5';
+                            if (likeCount) likeCount.className = 'badge bg-success text-white rounded-pill ms-1';
+
+                            if (btnDislike) btnDislike.className = 'btn btn-outline-secondary border-2 d-flex align-items-center gap-2 fw-semibold px-3 py-2';
+                            if (iconDislike) iconDislike.className = 'bi bi-hand-thumbs-down fs-5';
+                            if (dislikeCount) dislikeCount.className = 'badge bg-secondary text-white rounded-pill ms-1';
+                        }
+
+                        var feedback = document.getElementById('reaction-feedback');
+                        if (feedback) {
+                            feedback.style.display = 'block';
+                            feedback.textContent = data.userReaction === 'like'
+                                ? 'Terima kasih atas apresiasi Anda!'
+                                : (data.userReaction === 'dislike' ? 'Terima kasih atas masukannya.' : 'Pilihan Anda telah dibatalkan.');
+                            setTimeout(function() { feedback.style.display = 'none'; }, 3000);
+                        }
+                    }
+                } catch (err) {
+                    form.submit();
+                } finally {
+                    if (btnLike) btnLike.disabled = false;
+                    if (btnDislike) btnDislike.disabled = false;
+                }
+            });
+        });
     </script>
 </body>
 </html>
